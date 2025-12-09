@@ -1,100 +1,108 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import { LINKS } from '@/lib/constants';
+import Header from '@/components/Header.astro';
+import ClimateMap from '@/components/ClimateMap.astro';
+import '@/styles/global.css';
+import { SITE } from '@/lib/constants';
+import { fetchClimateRoboticsData } from '@/lib/mapData';
+
+// Fetch data at build time
+const entries = await fetchClimateRoboticsData();
+const currentPath = Astro.url.pathname;
+const title = 'Global Map';
+const description = 'Interactive map of 200+ climate robotics startups, companies and research programs worldwide.';
+const fullTitle = `${title} | ${SITE.name}`;
 ---
 
-<BaseLayout title="Map" description="Global Map of Climate Robotics - Discover 200+ startups, companies and research programs engaged in Climate Robotics worldwide.">
-  <!-- Hero Section -->
-  <section class="py-12 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-        <!-- Map Preview -->
-        <div class="rounded-lg overflow-hidden shadow-lg">
-          <img
-            src="/images/global-map.png"
-            alt="Global Map of Climate Robotics"
-            class="w-full"
-          />
-        </div>
-
-        <!-- Info -->
-        <div>
-          <h1 class="section-title text-left mb-6">Global Map of Climate Robotics</h1>
-          <p class="text-gray-600 mb-6">
-            Who is doing What, Where, How and Why in the Climate Robotics space? We've already
-            identified 200+ startups, companies and research programs engaged in Climate Robotics.
-            Please add any we've missed! We're continuing to update this map on a regular basis.
-          </p>
-          <a
-            href={LINKS.map.googleSpreadsheet}
-            target="_blank"
-            rel="noopener"
-            class="link-arrow"
-          >
-            Access the Map & Data
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
-      </div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    
+    {/* SEO Meta Tags */}
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content={SITE.name} />
+    <link rel="canonical" href={`${SITE.url}${currentPath}`} />
+    
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={`${SITE.url}${currentPath}`} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:image" content={`${SITE.url}/images/og-image.png`} />
+    
+    {/* Twitter Card */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE.url}/images/og-image.png`} />
+    
+    {/* Favicon */}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/crn-logo.png" />
+    
+    {/* Theme Color */}
+    <meta name="theme-color" content="#1e40af" />
+    
+    <title>{fullTitle}</title>
+  </head>
+  <body class="map-page">
+    {/* Skip to main content link for accessibility */}
+    <a href="#main-content" class="skip-link">
+      Skip to main content
+    </a>
+    
+    {/* Floating Header */}
+    <div class="floating-header">
+      <Header currentPath={currentPath} />
     </div>
-  </section>
+    
+    <main id="main-content" class="map-main" role="main">
+      <ClimateMap entries={entries} />
+    </main>
+  </body>
+</html>
 
-  <!-- Why We're Mapping -->
-  <section class="bg-gray-100 py-16">
-    <div class="container mx-auto px-4">
-      <h2 class="section-title mb-12">Mapping Climate Robotics</h2>
-      <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12">
-        <div>
-          <h3 class="text-xl font-heading font-semibold mb-4">
-            Why We're Mapping the Climate Robotics Space
-          </h3>
-          <p class="text-gray-600 mb-4">
-            The Global Map presents a comprehensive overview of the climate robotics field,
-            encompassing a wide range of organizations, from startups to established companies
-            and university programs.
-          </p>
-          <p class="text-gray-600 mb-4">
-            The map is a vital reference point for understanding the various initiatives and
-            developments within the global climate robotics sector. At its core, the Global Map
-            is an effort to catalog key actors, their geographies, and respective projects in
-            the climate robotics space.
-          </p>
-          <p class="text-gray-600 mb-4">
-            This makes it an invaluable tool for stakeholders, offering a clear picture of trends,
-            potential areas for collaboration, and the geographic distribution of efforts in this
-            dynamically evolving sector.
-          </p>
-          <p class="text-gray-600">
-            Our <a href="/research" class="text-crn-blue hover:underline font-semibold">White Paper</a>
-            draws extensively on this Global Map, as does our
-            <a href="/summits" class="text-crn-blue hover:underline font-semibold">upcoming Summit</a>.
-          </p>
-        </div>
-
-        <div>
-          <h3 class="text-xl font-heading font-semibold mb-4">Meet Our Team</h3>
-          <p class="text-gray-600 mb-4">
-            Want to join the Climate Robotics Network Research Team? Or get to know the existing
-            team and what else we're working on? Then join us on Slack to engage and learn more!
-          </p>
-          <p class="text-gray-600 mb-6">
-            Sincerest thanks to our
-            <a href={LINKS.map.naxa} target="_blank" rel="noopener" class="text-crn-blue hover:underline font-semibold">
-              friends at Naxa
-            </a>
-            for having produced the online interactive map! (Currently being updated, come back
-            soon and check the spreadsheet to access all the data, thank you!)
-          </p>
-          <a href="/slack" class="btn-primary">
-            Join Our Slack
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<style>
+  .map-page {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .floating-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .map-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: 72px; /* Height of header */
+  }
+  
+  /* Override skip link for map page */
+  :global(.skip-link) {
+    position: absolute;
+    left: -10000px;
+    z-index: 10000;
+  }
+  
+  :global(.skip-link:focus) {
+    left: 10px;
+    top: 80px;
+  }
+</style>
