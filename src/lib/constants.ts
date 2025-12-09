@@ -168,7 +168,7 @@ export const SITE = {
   name: 'Climate Robotics Network',
   tagline: 'Green Bots, Blue Planet',
   description: 'An inclusive community connecting, enabling, and supporting climate robotics worldwide.',
-  url: 'https://climaterobotics.network',
+  url: 'https://crn.elghareeb.space',
   
   // Stats (update these as the community grows)
   stats: {

@@ -6,5 +6,5 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
   integrations: [tailwind()],
   output: 'static',
-  site: 'https://climaterobotics.network',
+  site: 'https://crn.elghareeb.space',
 });
