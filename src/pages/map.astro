@@ -1,0 +1,100 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { LINKS } from '@/lib/constants';
+---
+
+<BaseLayout title="Map" description="Global Map of Climate Robotics - Discover 200+ startups, companies and research programs engaged in Climate Robotics worldwide.">
+  <!-- Hero Section -->
+  <section class="py-12 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Map Preview -->
+        <div class="rounded-lg overflow-hidden shadow-lg">
+          <img
+            src="/images/global-map.png"
+            alt="Global Map of Climate Robotics"
+            class="w-full"
+          />
+        </div>
+
+        <!-- Info -->
+        <div>
+          <h1 class="section-title text-left mb-6">Global Map of Climate Robotics</h1>
+          <p class="text-gray-600 mb-6">
+            Who is doing What, Where, How and Why in the Climate Robotics space? We've already
+            identified 200+ startups, companies and research programs engaged in Climate Robotics.
+            Please add any we've missed! We're continuing to update this map on a regular basis.
+          </p>
+          <a
+            href={LINKS.map.googleSpreadsheet}
+            target="_blank"
+            rel="noopener"
+            class="link-arrow"
+          >
+            Access the Map & Data
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why We're Mapping -->
+  <section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-12">Mapping Climate Robotics</h2>
+      <div class="max-w-5xl mx-auto grid lg:grid-cols-2 gap-12">
+        <div>
+          <h3 class="text-xl font-heading font-semibold mb-4">
+            Why We're Mapping the Climate Robotics Space
+          </h3>
+          <p class="text-gray-600 mb-4">
+            The Global Map presents a comprehensive overview of the climate robotics field,
+            encompassing a wide range of organizations, from startups to established companies
+            and university programs.
+          </p>
+          <p class="text-gray-600 mb-4">
+            The map is a vital reference point for understanding the various initiatives and
+            developments within the global climate robotics sector. At its core, the Global Map
+            is an effort to catalog key actors, their geographies, and respective projects in
+            the climate robotics space.
+          </p>
+          <p class="text-gray-600 mb-4">
+            This makes it an invaluable tool for stakeholders, offering a clear picture of trends,
+            potential areas for collaboration, and the geographic distribution of efforts in this
+            dynamically evolving sector.
+          </p>
+          <p class="text-gray-600">
+            Our <a href="/research" class="text-crn-blue hover:underline font-semibold">White Paper</a>
+            draws extensively on this Global Map, as does our
+            <a href="/summits" class="text-crn-blue hover:underline font-semibold">upcoming Summit</a>.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-heading font-semibold mb-4">Meet Our Team</h3>
+          <p class="text-gray-600 mb-4">
+            Want to join the Climate Robotics Network Research Team? Or get to know the existing
+            team and what else we're working on? Then join us on Slack to engage and learn more!
+          </p>
+          <p class="text-gray-600 mb-6">
+            Sincerest thanks to our
+            <a href={LINKS.map.naxa} target="_blank" rel="noopener" class="text-crn-blue hover:underline font-semibold">
+              friends at Naxa
+            </a>
+            for having produced the online interactive map! (Currently being updated, come back
+            soon and check the spreadsheet to access all the data, thank you!)
+          </p>
+          <a href="/slack" class="btn-primary">
+            Join Our Slack
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

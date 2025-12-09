@@ -1,0 +1,99 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import { LINKS, YOUTUBE } from '@/lib/constants';
+---
+
+<BaseLayout title="Research" description="2025 Climate Robotics White Paper - The first-ever comprehensive study on Climate Robotics.">
+  <!-- Main Content -->
+  <Section title="2025 Climate Robotics White Paper">
+    <div class="max-w-5xl mx-auto">
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
+        <!-- Video Embed -->
+        <div class="aspect-video rounded-lg overflow-hidden shadow-lg">
+          <iframe
+            src={YOUTUBE.getPlaylistEmbedUrl(YOUTUBE.playlistId)}
+            title="Introducing our White Paper on Climate Robotics"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="w-full h-full"
+          ></iframe>
+        </div>
+
+        <div>
+          <p class="text-lg text-gray-600 mb-6">
+            Welcome to the first-ever study on Climate Robotics!
+          </p>
+          <p class="text-gray-600 mb-6">
+            We draw on real-world examples to investigate the opportunities, limitations, and risks
+            of using robotics in Climate Action. This is an Open and Community-driven White Paper,
+            which has been fully revised and updated for 2025! We welcome all feedback across all
+            disciplines.
+          </p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Get the 2025 Edition -->
+  <section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-12">Get the 2025 Edition!</h2>
+      <div class="max-w-4xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+          <div class="p-6">
+            <h3 class="text-xl font-heading font-semibold mb-4">Why Climate Robotics?</h3>
+            <img
+              src="/images/white-paper-mosaic.png"
+              alt="Climate Robotics White Paper Cover"
+              class="w-full rounded-lg"
+            />
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-xl font-heading font-semibold mb-4">Available in Various Formats</h3>
+          <ul class="space-y-4">
+            <li>
+              <a
+                href={LINKS.research.whitePaperGoogleDoc}
+                target="_blank"
+                rel="noopener"
+                class="link-arrow"
+              >
+                Open Google Doc Version
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+              <span class="text-gray-500 text-sm block mt-1">Share feedback by inserting comments</span>
+            </li>
+            <li>
+              <a
+                href={LINKS.research.whitePaperPdf}
+                target="_blank"
+                rel="noopener"
+                class="link-arrow"
+              >
+                PDF Version
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+              <span class="text-gray-500 text-sm block mt-1">
+                Share feedback <a href={LINKS.research.feedbackForm} target="_blank" rel="noopener" class="text-crn-blue hover:underline">using this link</a>
+              </span>
+            </li>
+          </ul>
+
+          <div class="mt-8 p-4 bg-crn-blue/10 rounded-lg">
+            <p class="text-sm text-gray-700">
+              <strong>Join Us on Slack</strong> to discuss the paper and connect with other climate
+              robotics practitioners and researchers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

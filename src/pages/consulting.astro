@@ -1,0 +1,258 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Section from '@/components/Section.astro';
+import { LINKS, SITE } from '@/lib/constants';
+
+const services = [
+  {
+    icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+    title: 'Policy Development',
+    description: 'Shape climate robotics policy with evidence-based frameworks and strategic recommendations.',
+  },
+  {
+    icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z',
+    title: 'Applied Research',
+    description: 'Conduct cutting-edge research to solve real-world climate challenges with robotics.',
+  },
+  {
+    icon: 'M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z',
+    title: 'Strategic Partnerships',
+    description: 'Connect with the right partners, investors, and collaborators in the climate robotics ecosystem.',
+  },
+  {
+    icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+    title: 'Go-to-Market Strategy',
+    description: 'Launch and scale your climate robotics solutions with proven market strategies.',
+  },
+  {
+    icon: 'M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9',
+    title: 'Emerging Markets',
+    description: 'Navigate global markets and identify opportunities in developing regions.',
+  },
+  {
+    icon: 'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z',
+    title: 'Workshops & Training',
+    description: 'Build capacity in your organization with customized training programs.',
+  },
+];
+
+const clientTypes = [
+  'Startups',
+  'Companies',
+  'VCs',
+  'Foundations',
+  'Governments',
+  'International Organizations',
+  'Nonprofits',
+  'Universities',
+  'Research Labs',
+  'Policy Institutes',
+];
+
+const engagementTypes = [
+  { duration: '1-2 hours', label: 'Strategic Advice', description: 'Quick consultations for urgent decisions' },
+  { duration: '2-10 days', label: 'Project Work', description: 'Most common engagement type' },
+  { duration: '3-6 months', label: 'Long-term', description: 'Deep partnerships for complex initiatives' },
+  { duration: 'Ongoing', label: 'Retainer', description: 'Continuous advisory support' },
+];
+---
+
+<BaseLayout title="Consulting" description="Expert consulting services in climate robotics - policy development, applied research, strategic partnerships, and more.">
+  <!-- Hero -->
+  <section class="relative min-h-[60vh] flex items-center overflow-hidden">
+    {/* Background Image */}
+    <div class="absolute inset-0">
+      <img
+        src="/images/consulting-forest.jpg"
+        alt="Sunlight streaming through forest canopy"
+        class="w-full h-full object-cover"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-crn-navy/95 via-crn-navy/80 to-transparent"></div>
+    </div>
+    
+    <div class="relative container mx-auto px-4 py-20">
+      <div class="max-w-2xl">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-white mb-6">
+          Climate Robotics
+          <span class="block text-crn-green">Consulting</span>
+        </h1>
+        <p class="text-xl text-white/80 mb-8">
+          Expert consulting services fully tailored to your priorities and objectives. 
+          Leverage our global network of {SITE.stats.members} experts across {SITE.stats.countries} countries.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a 
+            href="#contact" 
+            class="inline-flex items-center gap-2 px-6 py-3 bg-crn-green text-white font-semibold uppercase tracking-wider hover:bg-crn-green-dark transition-colors rounded-lg"
+          >
+            Get in Touch
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+          <a 
+            href="#services" 
+            class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 text-white font-semibold uppercase tracking-wider hover:bg-white/20 transition-colors rounded-lg border border-white/30"
+          >
+            Our Services
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Services Grid -->
+  <section id="services" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-4">Our Services</h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        We offer a comprehensive range of consulting services to help you leverage robotics for climate action.
+      </p>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {services.map((service, idx) => (
+          <div 
+            class="group p-8 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-xl transition-all duration-300 animate-fade-in-up"
+            style={`animation-delay: ${idx * 100}ms`}
+          >
+            <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-crn-blue group-hover:scale-110 transition-all duration-300">
+              <svg class="w-7 h-7 text-crn-blue group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={service.icon} />
+              </svg>
+            </div>
+            <h3 class="text-xl font-heading font-semibold text-gray-900 mb-3">
+              {service.title}
+            </h3>
+            <p class="text-gray-600">
+              {service.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Engagement Types -->
+  <section class="py-20 bg-gray-100">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-4">Engagement Models</h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        Flexible engagement options to match your needs and timeline.
+      </p>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        {engagementTypes.map((type, idx) => (
+          <div class="text-center p-6 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-3xl font-heading font-bold text-crn-blue mb-2">
+              {type.duration}
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">{type.label}</h3>
+            <p class="text-gray-500 text-sm">{type.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Clients We Work With -->
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-4">Clients We Work With</h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        We partner with organizations of all types and sizes across the climate robotics ecosystem.
+      </p>
+      
+      <div class="flex flex-wrap justify-center gap-3 max-w-4xl mx-auto">
+        {clientTypes.map(type => (
+          <span class="px-5 py-2 bg-gray-100 text-gray-700 rounded-full font-medium text-sm hover:bg-crn-blue hover:text-white transition-colors cursor-default">
+            {type}
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Lead Consultant -->
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <div class="grid lg:grid-cols-3 gap-12 items-center">
+          <div class="lg:col-span-1 flex justify-center">
+            <div class="w-48 h-48 bg-gradient-to-br from-crn-blue to-crn-blue-dark rounded-2xl flex items-center justify-center text-white shadow-xl">
+              <span class="text-6xl font-heading font-bold">PM</span>
+            </div>
+          </div>
+          <div class="lg:col-span-2">
+            <h2 class="text-2xl md:text-3xl font-heading font-bold text-gray-900 mb-4">
+              Meet Our Lead Consultant
+            </h2>
+            <p class="text-gray-600 mb-4">
+              <a href={LINKS.team.patrickMeier.linkedIn} target="_blank" rel="noopener" class="text-crn-blue hover:underline font-semibold">
+                Dr. Patrick Meier
+              </a>, Founder of the Climate Robotics Network, serves as Lead Consultant with over 20 years 
+              of experience at the intersection of technology, humanitarian action, and environmental sustainability.
+            </p>
+            <p class="text-gray-600 mb-6">
+              Our network includes {SITE.stats.members} members across {SITE.stats.sectors} sectors of expertise 
+              in {SITE.stats.countries} countries worldwide, enabling us to draw on deep and proven expertise 
+              across multiple areas and geographies.
+            </p>
+            <a 
+              href={LINKS.team.patrickMeier.linkedIn}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 text-crn-blue font-semibold hover:underline"
+            >
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              Connect on LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact CTA -->
+  <section id="contact" class="py-20 bg-crn-blue">
+    <div class="container mx-auto px-4">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
+          Ready to Get Started?
+        </h2>
+        <p class="text-white/80 text-lg mb-8">
+          Tell us about your project and we'll get back to you within 24-48 hours to discuss how we can help.
+        </p>
+        
+        <div class="grid md:grid-cols-2 gap-6 max-w-xl mx-auto">
+          <a 
+            href={LINKS.slack.invite}
+            target="_blank"
+            rel="noopener"
+            class="flex flex-col items-center p-6 bg-white/10 rounded-xl hover:bg-white/20 transition-colors group"
+          >
+            <svg class="w-10 h-10 text-white mb-3" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/>
+            </svg>
+            <span class="text-white font-semibold">Message on Slack</span>
+            <span class="text-white/60 text-sm mt-1">Fastest response time</span>
+          </a>
+          
+          <a 
+            href={LINKS.team.patrickMeier.linkedIn}
+            target="_blank"
+            rel="noopener"
+            class="flex flex-col items-center p-6 bg-white/10 rounded-xl hover:bg-white/20 transition-colors group"
+          >
+            <svg class="w-10 h-10 text-white mb-3" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+            <span class="text-white font-semibold">Connect on LinkedIn</span>
+            <span class="text-white/60 text-sm mt-1">Direct message Dr. Meier</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

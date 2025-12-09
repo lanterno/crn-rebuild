@@ -1,16 +1,122 @@
 ---
-
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Section from '@/components/Section.astro';
+import { SITE, LINKS } from '@/lib/constants';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Home" description={`${SITE.name} - ${SITE.tagline}. ${SITE.description}`}>
+  <!-- Hero Section -->
+  <Hero
+    title={SITE.tagline}
+    subtitle="An inclusive community connecting, enabling, and supporting climate robotics worldwide."
+    image="/images/hero-robot-tree.webp"
+    imageAlt="Robotic hand nurturing a tree against a blue sky"
+    dark={true}
+    imagePosition="right"
+  >
+    <div class="flex flex-wrap gap-4 justify-center lg:justify-start mt-8">
+      <a 
+        href="/slack" 
+        class="inline-flex items-center gap-2 px-6 py-3 bg-crn-green text-white font-semibold uppercase tracking-wider hover:bg-crn-green-dark transition-colors rounded-lg"
+      >
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>
+        </svg>
+        Join Our Community
+      </a>
+      <a 
+        href="/summits" 
+        class="inline-flex items-center gap-2 px-6 py-3 bg-transparent border-2 border-white text-white font-semibold uppercase tracking-wider hover:bg-white hover:text-crn-navy transition-colors rounded-lg"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        Watch Summit Videos
+      </a>
+    </div>
+  </Hero>
+
+  <!-- All Are Welcome Section -->
+  <Section title="All Are Welcome">
+    <div class="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+      <div class="flex justify-center">
+        <img
+          src="/images/crn-logo.png"
+          alt="Climate Robotics Network Logo - interconnected circles"
+          class="w-64 h-64 md:w-80 md:h-80"
+        />
+      </div>
+      <div class="text-center lg:text-left">
+        <h3 class="text-2xl font-heading font-semibold mb-4">
+          Inclusive Community of Practice
+        </h3>
+        <p class="text-gray-600 mb-4">
+          We connect, enable, and support an open Climate Robotics Community.
+        </p>
+        <p class="text-gray-600 mb-6">
+          We champion diversity, inclusion & equity in researching, developing, and deploying
+          robotics to scale climate action.
+        </p>
+        <div class="flex flex-wrap justify-center lg:justify-start gap-4">
+          <a href="/slack" class="link-arrow">
+            Join Us
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+          <span class="text-gray-400">|</span>
+          <a href={LINKS.social.youtubePlaylists} target="_blank" rel="noopener" class="link-arrow">
+            Latest Videos
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- Not Your Typical Network Section -->
+  <Section title="Not Your Typical Network" dark={true}>
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="text-lg text-gray-600 mb-8">
+        The {SITE.name} brings together researchers, engineers, entrepreneurs, 
+        policymakers, and practitioners from around the world who are working to leverage 
+        robotics for climate action.
+      </p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <div class="text-4xl font-heading font-bold text-crn-blue mb-2">{SITE.stats.members}</div>
+          <p class="text-gray-600">Members</p>
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <div class="text-4xl font-heading font-bold text-crn-blue mb-2">{SITE.stats.countries}</div>
+          <p class="text-gray-600">Countries</p>
+        </div>
+        <div class="p-6 bg-white rounded-lg shadow-md">
+          <div class="text-4xl font-heading font-bold text-crn-blue mb-2">{SITE.stats.sectors}</div>
+          <p class="text-gray-600">Sectors</p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <!-- CTA Section -->
+  <section class="bg-crn-blue py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
+        Ready to Join the Movement?
+      </h2>
+      <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+        Connect with climate robotics experts, access our research, and be part of the solution.
+      </p>
+      <a href="/slack" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-crn-blue font-semibold uppercase tracking-wider hover:bg-gray-100 transition-colors">
+        Join Our Slack Community
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
