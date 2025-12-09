@@ -1,0 +1,325 @@
+---
+/**
+ * Summits Landing Page
+ * Showcases upcoming summit with hero and lists past summits as archive.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SummitCard from '@/components/SummitCard.astro';
+import { SUMMITS } from '@/lib/summits-data';
+import { LINKS } from '@/lib/constants';
+
+// Get upcoming and past summits
+const allSummits = Object.values(SUMMITS).sort((a, b) => 
+  parseInt(b.year) - parseInt(a.year)
+);
+const upcomingSummit = allSummits.find(s => s.status === 'upcoming');
+const pastSummits = allSummits.filter(s => s.status === 'past');
+
+// Calculate countdown for upcoming summit
+const getCountdown = (dateStr: string) => {
+  const target = new Date(dateStr);
+  const now = new Date();
+  const diff = target.getTime() - now.getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  return days > 0 ? days : 0;
+};
+
+const daysUntilSummit = upcomingSummit 
+  ? getCountdown(upcomingSummit.dateRange.start) 
+  : 0;
+---
+
+<BaseLayout 
+  title="Climate Robotics Summits" 
+  description="Join the global Climate Robotics Summit - connecting researchers, engineers, and practitioners to scale climate action through robotics."
+>
+  {/* Hero Section - Upcoming Summit */}
+  {upcomingSummit && (
+    <section class="relative min-h-[80vh] flex items-center overflow-hidden">
+      {/* Background */}
+      <div class="absolute inset-0 bg-gradient-to-br from-crn-navy via-crn-blue-dark to-crn-blue"></div>
+      
+      {/* Animated Background Elements */}
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-crn-green/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-crn-blue-light/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+        <div class="absolute top-1/2 left-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl animate-pulse" style="animation-delay: 2s;"></div>
+      </div>
+      
+      {/* Grid Pattern Overlay */}
+      <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+      
+      <div class="relative container mx-auto px-4 py-20">
+        <div class="max-w-4xl mx-auto text-center">
+          {/* Status Badge */}
+          <div class="inline-flex items-center gap-2 px-4 py-2 bg-crn-green/20 border border-crn-green/50 rounded-full text-crn-green text-sm font-semibold mb-8 animate-fade-in">
+            <span class="w-2 h-2 bg-crn-green rounded-full animate-pulse"></span>
+            Upcoming Event
+          </div>
+          
+          {/* Summit Title */}
+          <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6 animate-fade-in" style="animation-delay: 0.1s;">
+            Climate Robotics
+            <span class="block text-crn-green">Summit {upcomingSummit.year}</span>
+          </h1>
+          
+          {/* Tagline */}
+          <p class="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto animate-fade-in" style="animation-delay: 0.2s;">
+            {upcomingSummit.tagline}
+          </p>
+          
+          {/* Date & Location */}
+          <div class="flex flex-wrap justify-center gap-6 mb-10 animate-fade-in" style="animation-delay: 0.3s;">
+            <div class="flex items-center gap-2 text-white/90">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span class="font-semibold">{upcomingSummit.dates}</span>
+            </div>
+            <div class="flex items-center gap-2 text-white/90">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+              <span class="font-semibold">{upcomingSummit.location}</span>
+            </div>
+          </div>
+          
+          {/* Countdown */}
+          {daysUntilSummit > 0 && (
+            <div class="mb-10 animate-fade-in" style="animation-delay: 0.4s;">
+              <div class="inline-flex items-center gap-4 px-8 py-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
+                <div class="text-center">
+                  <span class="block text-4xl md:text-5xl font-heading font-bold text-white" id="countdown-days">{daysUntilSummit}</span>
+                  <span class="text-white/60 text-sm uppercase tracking-wide">Days</span>
+                </div>
+                <div class="text-white/40 text-2xl">:</div>
+                <div class="text-center">
+                  <span class="block text-4xl md:text-5xl font-heading font-bold text-white" id="countdown-hours">00</span>
+                  <span class="text-white/60 text-sm uppercase tracking-wide">Hours</span>
+                </div>
+                <div class="text-white/40 text-2xl">:</div>
+                <div class="text-center">
+                  <span class="block text-4xl md:text-5xl font-heading font-bold text-white" id="countdown-mins">00</span>
+                  <span class="text-white/60 text-sm uppercase tracking-wide">Mins</span>
+                </div>
+              </div>
+            </div>
+          )}
+          
+          {/* CTAs */}
+          <div class="flex flex-wrap justify-center gap-4 animate-fade-in" style="animation-delay: 0.5s;">
+            <a 
+              href={`/summits/${upcomingSummit.year}`}
+              class="inline-flex items-center gap-2 px-8 py-4 bg-white text-crn-blue font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg"
+            >
+              Learn More
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <a 
+              href={LINKS.summit.sponsorDeck}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 px-8 py-4 bg-transparent border-2 border-white text-white font-bold uppercase tracking-wider hover:bg-white hover:text-crn-blue transition-colors rounded-lg"
+            >
+              Become a Sponsor
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      {/* Scroll Indicator */}
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+    </section>
+  )}
+  
+  {/* Summit Overview Stats */}
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+        <div class="text-center">
+          <span class="block text-4xl md:text-5xl font-heading font-bold text-crn-blue">2</span>
+          <span class="text-gray-600">Summits Held</span>
+        </div>
+        <div class="text-center">
+          <span class="block text-4xl md:text-5xl font-heading font-bold text-crn-blue">1000+</span>
+          <span class="text-gray-600">Total Attendees</span>
+        </div>
+        <div class="text-center">
+          <span class="block text-4xl md:text-5xl font-heading font-bold text-crn-blue">50+</span>
+          <span class="text-gray-600">Sessions</span>
+        </div>
+        <div class="text-center">
+          <span class="block text-4xl md:text-5xl font-heading font-bold text-crn-blue">40+</span>
+          <span class="text-gray-600">Countries</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  {/* What to Expect */}
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-12">What to Expect</h2>
+      
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
+          <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-crn-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold mb-3">Expert Keynotes</h3>
+          <p class="text-gray-600">
+            Hear from world-renowned researchers and practitioners at the forefront of climate robotics innovation.
+          </p>
+        </div>
+        
+        <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
+          <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-crn-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold mb-3">Panel Discussions</h3>
+          <p class="text-gray-600">
+            Deep-dive panels covering biodiversity, agriculture, energy, ethics, and the future of climate robotics.
+          </p>
+        </div>
+        
+        <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
+          <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-crn-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold mb-3">Startup Pitches</h3>
+          <p class="text-gray-600">
+            Discover innovative climate robotics startups and connect with the entrepreneurs shaping the future.
+          </p>
+        </div>
+        
+        <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
+          <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-crn-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold mb-3">Global Community</h3>
+          <p class="text-gray-600">
+            Network with attendees from 40+ countries, spanning research, industry, policy, and non-profit sectors.
+          </p>
+        </div>
+        
+        <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
+          <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-crn-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold mb-3">On-Demand Access</h3>
+          <p class="text-gray-600">
+            All sessions are recorded and available on our YouTube channel for on-demand viewing after the event.
+          </p>
+        </div>
+        
+        <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
+          <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6">
+            <svg class="w-7 h-7 text-crn-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold mb-3">Free & Open</h3>
+          <p class="text-gray-600">
+            Registration is free for all attendees. We believe knowledge should be accessible to everyone.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  {/* Past Summits Archive */}
+  {pastSummits.length > 0 && (
+    <section class="py-20 bg-gray-100">
+      <div class="container mx-auto px-4">
+        <h2 class="section-title mb-4">Past Summits</h2>
+        <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+          Missed a summit? Watch all recorded sessions from previous events.
+        </p>
+        
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {pastSummits.map(summit => (
+            <SummitCard summit={summit} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  
+  {/* CTA Section */}
+  <section class="py-20 bg-crn-blue">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
+        Be Part of the Movement
+      </h2>
+      <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+        Join our Slack community to stay updated on summit announcements, connect with speakers, and network year-round.
+      </p>
+      <a 
+        href="/slack" 
+        class="inline-flex items-center gap-2 px-8 py-4 bg-white text-crn-blue font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg"
+      >
+        Join Our Community
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ targetDate: upcomingSummit?.dateRange.start }}>
+  // Countdown timer
+  if (targetDate) {
+    const updateCountdown = () => {
+      const now = new Date().getTime();
+      const target = new Date(targetDate).getTime();
+      const diff = target - now;
+      
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        
+        const daysEl = document.getElementById('countdown-days');
+        const hoursEl = document.getElementById('countdown-hours');
+        const minsEl = document.getElementById('countdown-mins');
+        
+        if (daysEl) daysEl.textContent = String(days);
+        if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+        if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
+      }
+    };
+    
+    updateCountdown();
+    setInterval(updateCountdown, 60000); // Update every minute
+  }
+</script>
+
+<style>
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+    opacity: 0;
+  }
+</style>
+

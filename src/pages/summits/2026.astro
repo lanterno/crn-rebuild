@@ -1,0 +1,419 @@
+---
+/**
+ * Climate Robotics Summit 2026 Page
+ * Upcoming summit with registration CTA, countdown, and sponsor opportunities.
+ */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SponsorGrid from '@/components/SponsorGrid.astro';
+import { SUMMITS, SPONSORS_2026 } from '@/lib/summits-data';
+import { LINKS } from '@/lib/constants';
+
+const summit = SUMMITS['2026'];
+
+// Calculate countdown
+const getCountdown = (dateStr: string) => {
+  const target = new Date(dateStr);
+  const now = new Date();
+  const diff = target.getTime() - now.getTime();
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  return days > 0 ? days : 0;
+};
+
+const daysUntilSummit = getCountdown(summit.dateRange.start);
+---
+
+<BaseLayout 
+  title={summit.name} 
+  description={`Join the ${summit.name} on ${summit.dates}. ${summit.tagline}`}
+>
+  {/* Hero Section */}
+  <section class="relative min-h-[90vh] flex items-center overflow-hidden">
+    {/* Background */}
+    <div class="absolute inset-0 bg-gradient-to-br from-crn-navy via-crn-blue-dark to-crn-blue"></div>
+    
+    {/* Animated Background Elements */}
+    <div class="absolute inset-0 overflow-hidden">
+      <div class="absolute top-20 left-10 w-72 h-72 bg-crn-green/20 rounded-full blur-3xl animate-float"></div>
+      <div class="absolute bottom-20 right-10 w-96 h-96 bg-crn-blue-light/20 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
+      <div class="absolute top-1/2 left-1/3 w-64 h-64 bg-white/5 rounded-full blur-2xl animate-float" style="animation-delay: 4s;"></div>
+    </div>
+    
+    {/* Grid Pattern */}
+    <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%23ffffff\" fill-opacity=\"0.4\"%3E%3Cpath d=\"M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+    
+    <div class="relative container mx-auto px-4 py-20">
+      <div class="max-w-4xl mx-auto text-center">
+        {/* Back Link */}
+        <a href="/summits" class="inline-flex items-center gap-2 text-white/60 hover:text-white mb-8 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          All Summits
+        </a>
+        
+        {/* Badge */}
+        <div class="inline-flex items-center gap-2 px-4 py-2 bg-crn-green/20 border border-crn-green/50 rounded-full text-crn-green text-sm font-semibold mb-8">
+          <span class="w-2 h-2 bg-crn-green rounded-full animate-pulse"></span>
+          Registration Opening Soon
+        </div>
+        
+        {/* Title */}
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6">
+          Climate Robotics
+          <span class="block text-transparent bg-clip-text bg-gradient-to-r from-crn-green to-teal-400">Summit 2026</span>
+        </h1>
+        
+        {/* Tagline */}
+        <p class="text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
+          {summit.tagline}
+        </p>
+        
+        {/* Date & Location */}
+        <div class="flex flex-wrap justify-center gap-6 mb-12">
+          <div class="flex items-center gap-2 text-white bg-white/10 px-6 py-3 rounded-full">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span class="font-semibold">{summit.dates}</span>
+          </div>
+          <div class="flex items-center gap-2 text-white bg-white/10 px-6 py-3 rounded-full">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+            </svg>
+            <span class="font-semibold">{summit.location}</span>
+          </div>
+        </div>
+        
+        {/* Countdown */}
+        <div class="mb-12">
+          <p class="text-white/60 text-sm uppercase tracking-wide mb-4">Summit starts in</p>
+          <div class="inline-flex items-center gap-4 px-8 py-6 bg-black/30 backdrop-blur-sm rounded-2xl border border-white/10">
+            <div class="text-center px-4">
+              <span class="block text-5xl md:text-6xl font-heading font-bold text-white tabular-nums" id="countdown-days">{daysUntilSummit}</span>
+              <span class="text-white/60 text-sm uppercase tracking-wide">Days</span>
+            </div>
+            <div class="text-white/30 text-3xl">:</div>
+            <div class="text-center px-4">
+              <span class="block text-5xl md:text-6xl font-heading font-bold text-white tabular-nums" id="countdown-hours">00</span>
+              <span class="text-white/60 text-sm uppercase tracking-wide">Hours</span>
+            </div>
+            <div class="text-white/30 text-3xl">:</div>
+            <div class="text-center px-4">
+              <span class="block text-5xl md:text-6xl font-heading font-bold text-white tabular-nums" id="countdown-mins">00</span>
+              <span class="text-white/60 text-sm uppercase tracking-wide">Mins</span>
+            </div>
+            <div class="text-white/30 text-3xl">:</div>
+            <div class="text-center px-4">
+              <span class="block text-5xl md:text-6xl font-heading font-bold text-white tabular-nums" id="countdown-secs">00</span>
+              <span class="text-white/60 text-sm uppercase tracking-wide">Secs</span>
+            </div>
+          </div>
+        </div>
+        
+        {/* CTAs */}
+        <div class="flex flex-wrap justify-center gap-4">
+          <a 
+            href={LINKS.summit.registrationForm}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 px-8 py-4 bg-crn-green text-white font-bold uppercase tracking-wider hover:bg-crn-green-dark transition-colors rounded-lg shadow-lg shadow-crn-green/25"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+            Notify Me When Registration Opens
+          </a>
+          <a 
+            href={LINKS.summit.sponsorDeck}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex items-center gap-2 px-8 py-4 bg-transparent border-2 border-white text-white font-bold uppercase tracking-wider hover:bg-white hover:text-crn-blue transition-colors rounded-lg"
+          >
+            Become a Sponsor
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    {/* Scroll Indicator */}
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
+  </section>
+  
+  {/* What's Coming Section */}
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-4">What's Coming</h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        Building on the success of Summit 2025, we're preparing an even bigger and better experience.
+      </p>
+      
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {/* Agenda */}
+        <div class="relative p-8 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 text-center">
+          <div class="absolute -top-3 -right-3 px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold uppercase rounded-full">
+            Coming Soon
+          </div>
+          <div class="w-16 h-16 mx-auto bg-gray-200 rounded-2xl flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold text-gray-400 mb-2">Full Agenda</h3>
+          <p class="text-gray-400 text-sm">
+            3-day program with keynotes, panels, and networking sessions.
+          </p>
+        </div>
+        
+        {/* Speakers */}
+        <div class="relative p-8 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 text-center">
+          <div class="absolute -top-3 -right-3 px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold uppercase rounded-full">
+            Coming Soon
+          </div>
+          <div class="w-16 h-16 mx-auto bg-gray-200 rounded-2xl flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold text-gray-400 mb-2">Speaker Lineup</h3>
+          <p class="text-gray-400 text-sm">
+            World-class researchers, practitioners, and industry leaders.
+          </p>
+        </div>
+        
+        {/* Registration */}
+        <div class="relative p-8 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 text-center">
+          <div class="absolute -top-3 -right-3 px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold uppercase rounded-full">
+            Coming Soon
+          </div>
+          <div class="w-16 h-16 mx-auto bg-gray-200 rounded-2xl flex items-center justify-center mb-6">
+            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-heading font-semibold text-gray-400 mb-2">Open Registration</h3>
+          <p class="text-gray-400 text-sm">
+            Free registration for all attendees worldwide.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  {/* Previous Summit Highlights */}
+  <section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-4">Summit 2025 Highlights</h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        See what you can expect at Summit 2026 by watching recordings from our previous event.
+      </p>
+      
+      <div class="max-w-4xl mx-auto">
+        {/* Video Embed */}
+        <div class="aspect-video rounded-2xl overflow-hidden shadow-2xl mb-8">
+          <iframe
+            src="https://www.youtube.com/embed/videoseries?list=PLCSxuLa5A9VqMM74yg8URkhv03t-fsdht"
+            title="Climate Robotics Summit 2025 Playlist"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            class="w-full h-full"
+          ></iframe>
+        </div>
+        
+        <div class="text-center">
+          <a 
+            href="/summits/2025"
+            class="inline-flex items-center gap-2 text-crn-blue font-semibold hover:text-crn-blue-dark transition-colors"
+          >
+            View Full Summit 2025 Archive
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  {/* Sponsorship Section */}
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-4">Become a Sponsor</h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        Partner with the Climate Robotics Network to reach a global audience of researchers, practitioners, and decision-makers.
+      </p>
+      
+      {/* Sponsorship Tiers */}
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12">
+        {/* Platinum */}
+        <div class="relative p-8 bg-gradient-to-b from-gray-100 to-white rounded-2xl border-2 border-gray-300 text-center">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gray-800 text-white text-sm font-bold uppercase rounded-full">
+            Platinum
+          </div>
+          <div class="w-20 h-20 mx-auto bg-gray-800 rounded-2xl flex items-center justify-center mb-6 mt-4">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+            </svg>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Premium logo placement
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Keynote speaking slot
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Social media mentions
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              VIP networking access
+            </li>
+          </ul>
+        </div>
+        
+        {/* Gold */}
+        <div class="relative p-8 bg-gradient-to-b from-yellow-50 to-white rounded-2xl border-2 border-yellow-300 text-center">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-yellow-500 text-white text-sm font-bold uppercase rounded-full">
+            Gold
+          </div>
+          <div class="w-20 h-20 mx-auto bg-yellow-500 rounded-2xl flex items-center justify-center mb-6 mt-4">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Logo on website & materials
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Panel speaking opportunity
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Newsletter mentions
+            </li>
+          </ul>
+        </div>
+        
+        {/* Silver */}
+        <div class="relative p-8 bg-gradient-to-b from-gray-50 to-white rounded-2xl border-2 border-gray-200 text-center">
+          <div class="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gray-400 text-white text-sm font-bold uppercase rounded-full">
+            Silver
+          </div>
+          <div class="w-20 h-20 mx-auto bg-gray-400 rounded-2xl flex items-center justify-center mb-6 mt-4">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+            </svg>
+          </div>
+          <ul class="text-left text-gray-600 space-y-2 mb-6">
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Logo on website
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-crn-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              Social media thank you
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="text-center">
+        <a 
+          href={LINKS.summit.sponsorDeck}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center gap-2 px-8 py-4 bg-crn-blue text-white font-bold uppercase tracking-wider hover:bg-crn-blue-dark transition-colors rounded-lg"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Download Sponsorship Deck
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  {/* Organizing Partners */}
+  {SPONSORS_2026.length > 0 && (
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="section-title mb-12">Organizing Partners</h2>
+        <div class="max-w-4xl mx-auto">
+          <SponsorGrid sponsors={SPONSORS_2026} showTiers={false} />
+        </div>
+      </div>
+    </section>
+  )}
+  
+  {/* Stay Connected CTA */}
+  <section class="py-20 bg-crn-blue">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
+        Stay Connected
+      </h2>
+      <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+        Join our Slack community for the latest updates, speaker announcements, and to connect with fellow attendees before the summit.
+      </p>
+      <a 
+        href="/slack"
+        class="inline-flex items-center gap-3 px-8 py-4 bg-white text-crn-blue font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg"
+      >
+        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>
+        </svg>
+        Join Our Slack Community
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ targetDate: summit.dateRange.start }}>
+  // Live countdown timer
+  const updateCountdown = () => {
+    const now = new Date().getTime();
+    const target = new Date(targetDate).getTime();
+    const diff = target - now;
+    
+    if (diff > 0) {
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const secs = Math.floor((diff % (1000 * 60)) / 1000);
+      
+      const daysEl = document.getElementById('countdown-days');
+      const hoursEl = document.getElementById('countdown-hours');
+      const minsEl = document.getElementById('countdown-mins');
+      const secsEl = document.getElementById('countdown-secs');
+      
+      if (daysEl) daysEl.textContent = String(days);
+      if (hoursEl) hoursEl.textContent = String(hours).padStart(2, '0');
+      if (minsEl) minsEl.textContent = String(mins).padStart(2, '0');
+      if (secsEl) secsEl.textContent = String(secs).padStart(2, '0');
+    }
+  };
+  
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+</style>
+
