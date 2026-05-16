@@ -460,7 +460,7 @@ export const SPEAKERS_2025: Speaker[] = [
     organization: 'Imperial College London & EMPA',
     photoUrl: '/images/speakers/mirko-kovac.jpg',
     bio: 'Leading researcher in sustainability robotics and aerial systems for environmental monitoring.',
-    linkedIn: 'https://www.linkedin.com/in/stefanomintchev/',
+    linkedIn: 'https://www.linkedin.com/in/mirkokovac/',
     isKeynote: true,
     summitYear: '2025',
   },
@@ -473,6 +473,7 @@ export const SPEAKERS_2025: Speaker[] = [
     bio: 'Expert in minimalist robotics and autonomous systems for environmental applications.',
     isKeynote: true,
     summitYear: '2025',
+    linkedIn: 'https://www.linkedin.com/in/dr-alexandra-nilles/',
   },
   {
     id: 'dana-yoerger',
@@ -483,6 +484,7 @@ export const SPEAKERS_2025: Speaker[] = [
     bio: 'Pioneer in underwater robotics and deep-sea exploration for climate research.',
     isKeynote: true,
     summitYear: '2025',
+    linkedIn: 'https://www.linkedin.com/in/dana-yoerger-a053821a/',
   },
   {
     id: 'katie-bradford',
@@ -492,6 +494,7 @@ export const SPEAKERS_2025: Speaker[] = [
     photoUrl: '/images/speakers/katie-bradford.jpg',
     bio: 'Focused on investing in climate robotics startups and scaling solutions.',
     summitYear: '2025',
+    linkedIn: 'https://www.linkedin.com/in/bradford-katie/',
   },
   {
     id: 'fady-saad',
@@ -501,6 +504,7 @@ export const SPEAKERS_2025: Speaker[] = [
     photoUrl: '/images/speakers/fady-saad.jpg',
     bio: 'Building the robotics ecosystem and supporting climate-focused startups.',
     summitYear: '2025',
+    linkedIn: 'https://www.linkedin.com/in/fady-saad-0a1972/',
   },
   {
     id: 'brooke-zhang',
@@ -510,6 +514,7 @@ export const SPEAKERS_2025: Speaker[] = [
     photoUrl: '/images/speakers/brooke-zhang.jpg',
     bio: 'Working on deploying robots for environmental monitoring and disaster response.',
     summitYear: '2025',
+    linkedIn: 'https://www.linkedin.com/in/brookeqingzhang/',
   },
   {
     id: 'salman-faraji',
@@ -519,6 +524,7 @@ export const SPEAKERS_2025: Speaker[] = [
     photoUrl: '/images/speakers/salman-faraji.jpg',
     bio: 'Developing legged robots for challenging terrain in climate applications.',
     summitYear: '2025',
+    linkedIn: 'https://www.linkedin.com/in/salman-faraji/',
   },
 ];
 
@@ -697,6 +703,7 @@ export const SPEAKERS_2026: Speaker[] = [
     organization: 'Worcester Polytechnic Institute',
     photoUrl: '/images/speakers/berk-calli.jpg',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/berk-calli-6313461a/',
   },
   {
     id: 'jesica-chavez',
@@ -704,6 +711,7 @@ export const SPEAKERS_2026: Speaker[] = [
     title: 'Gold Sponsor Welcome',
     organization: 'RoboSuccess',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/jesica-chavez/',
   },
   {
     id: 'stefano-minchev',
@@ -712,6 +720,7 @@ export const SPEAKERS_2026: Speaker[] = [
     organization: 'Climate Robotics Network',
     photoUrl: '/images/speakers/stefano-minchev.jpg',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/stefanomintchev/',
   },
   // Keynotes
   {
@@ -722,6 +731,7 @@ export const SPEAKERS_2026: Speaker[] = [
     bio: 'CEO of the Climate Collective, a coalition leveraging sustainable web3 infrastructure to unlock verifiable climate action at scale. Anna brings 16+ years of international experience at the intersection of development, technology, and the private sector across four continents.',
     isKeynote: true,
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/anna-lerner-nesbitt/',
   },
   {
     id: 'cathy-wu',
@@ -731,6 +741,7 @@ export const SPEAKERS_2026: Speaker[] = [
     bio: 'Studies machine learning for control and optimization for sustainable mobility. Founder and Chair of the Interdisciplinary Research Initiative at the ACM Future of Computing Academy and recipient of the NSF Career Award for advancing learning in large-scale cyber-physical systems.',
     isKeynote: true,
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/cathywu/',
   },
   {
     id: 'thomas-walla',
@@ -741,6 +752,7 @@ export const SPEAKERS_2026: Speaker[] = [
     bio: 'Led the team that won the Grand Prize in the 2024 XPRIZE Rainforest Competition, developing transformative technologies for biodiversity sampling in tropical forests. Long-standing background in tropical ecology and biodiversity monitoring from field research in the Amazon and Andes.',
     isKeynote: true,
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/thomas-walla-520b49297/',
   },
   // Session 1 — Biodiversity and Robotics
   {
@@ -751,6 +763,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/raphael-zufferey.jpg',
     bio: 'Specializes in aerial robotics for environmental monitoring, using autonomous drones to support biodiversity assessment and conservation.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/raphael-zufferey/',
   },
   {
     id: 'ulrik-schultz-lundquist',
@@ -760,6 +773,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/ulrik-schultz-lundquist.jpg',
     bio: 'Leader in drone technology, working on autonomous robotic systems for environmental monitoring and biodiversity applications.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/ulrik/',
   },
   {
     id: 'davide-di-blasi',
@@ -778,6 +792,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/annette-govindarajan.jpg',
     bio: 'Marine biodiversity and genomics, leveraging advanced sensing and robotic platforms to study ocean ecosystems and their response to environmental change.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/annette-govindarajan/',
   },
   {
     id: 'jurg-germann',
@@ -787,6 +802,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/jurg-germann.jpg',
     bio: 'Leads development of robotic and data-driven solutions for environmental monitoring, supporting biodiversity conservation at scale.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/jurggermann/',
   },
   // Session 2 — Start-up Pitches
   {
@@ -795,6 +811,7 @@ export const SPEAKERS_2026: Speaker[] = [
     title: 'Chief Executive Officer',
     organization: 'Danu Robotics',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/xiaoyan-amy-m-048035123/',
   },
   {
     id: 'annie-rosas',
@@ -802,6 +819,7 @@ export const SPEAKERS_2026: Speaker[] = [
     title: 'Co-founder and Director',
     organization: 'Bluekali',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/annierosashdez/',
   },
   // Session 3 — Energy Infrastructure
   {
@@ -811,6 +829,7 @@ export const SPEAKERS_2026: Speaker[] = [
     organization: 'University of Michigan',
     bio: 'Marine robotics, robot navigation, and environmental monitoring. Lead author of the "Roadmap for Climate-Relevant Robotics."',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/alan-papalia/',
   },
   {
     id: 'charles-dawson',
@@ -820,6 +839,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/charles-dawson.jpg',
     bio: 'Works on enabling power flexibility for data centers. Previously at the Massachusetts Department of Energy Resources on load management, grid planning, and clean energy policy.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/c6d5/',
   },
   {
     id: 'dave-lane',
@@ -829,6 +849,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/dave-lane.jpg',
     bio: 'Pioneer in marine robotics — autonomy, sonar, and subsea systems for offshore inspection, intervention, and energy applications.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/lanedavid/',
   },
   {
     id: 'yvan-petillot',
@@ -838,6 +859,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/yvan-petillot.jpg',
     bio: 'Marine sector robotics with a long-term vision of robot teams operating in hazardous environments. Two decades of contributions to robot perception, navigation, and planning underwater.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/yvan-petillot-7b524b4/',
   },
   // Session 4 — Earth and Ocean Observations
   {
@@ -848,6 +870,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/matthew-palmer.jpg',
     bio: 'Ocean warming, sea-level change, and climate projections supporting large-scale Earth and ocean observation.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/matt-palmer-23829228/',
   },
   {
     id: 'enrico-ajanic',
@@ -856,6 +879,7 @@ export const SPEAKERS_2026: Speaker[] = [
     organization: 'Meteomatics',
     bio: 'Develops drone-based atmospheric sensing systems that enhance weather and Earth observation capabilities.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/enricoajanic/',
   },
   {
     id: 'michal-adamkiewicz',
@@ -865,6 +889,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/michal-adamkiewicz.jpg',
     bio: 'Contributes to long-duration balloon platforms and meteorological sensing technologies for global atmospheric observation.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/micha%C5%82-adamkiewicz/',
   },
   {
     id: 'maarja-kruusmaa',
@@ -874,6 +899,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/maarja-kruusmaa.jpg',
     bio: 'Leads research in underwater robotics, underwater sensing, and environmental monitoring systems.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/maarja-kruusmaa/',
   },
   {
     id: 'gordon-zhang',
@@ -883,6 +909,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/gordon-zhang.jpg',
     bio: 'Integrates ocean observation, modeling, and autonomous systems to study ocean circulation and marine ecosystem dynamics.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/gordonzhang1/',
   },
   // Session 5 — Funding Climate Robotics
   {
@@ -893,6 +920,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/benjamin-maitland-lewis.jpg',
     bio: 'Works closely with early-stage founders on fundraising, growth, and commercialization strategies for emerging climate robotics ventures.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/maitlandlewis/',
   },
   {
     id: 'edgar-ke',
@@ -902,6 +930,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/edgar-ke.jpg',
     bio: 'Climate deeptech investor with a focus on batteries and robotics, supporting founders working on hard-tech solutions for climate impact.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/edgarke/',
   },
   {
     id: 'fady-saad-2026',
@@ -911,6 +940,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/fady-saad.jpg',
     bio: 'Extensive experience in robotics venture investing, startup fundraising, and scaling innovation ecosystems.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/fady-saad-0a1972/',
   },
   {
     id: 'andy-gollach',
@@ -920,6 +950,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/andy-gollach.jpg',
     bio: 'Supports hard-tech founders in energy, heavy industry, and climate technology, spanning investment and industrial operations.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/andrewgollach/',
   },
   // Session 6 — Recycling Management and Robotics
   {
@@ -930,6 +961,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/manuel-catalano.jpg',
     bio: 'Focused on Physical AI Technologies for Human-Robot Co-Evolution, developing flexible robotic solutions for the recycling of soft materials.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/manuel-giuseppe-catalano-518a5631/',
   },
   {
     id: 'alireza-rastegarpanah',
@@ -939,6 +971,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/alireza-rastegarpanah.png',
     bio: 'Specializes in robotic EV battery recycling at the National Sustainable Robotics Centre in the UK.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/alireza-rastegarpanah-37a98441/',
   },
   {
     id: 'anwar-al-assadi',
@@ -948,6 +981,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/anwar-al-assadi.jpg',
     bio: 'Focused on automated solutions for EV battery recycling.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/anwaralassadi/',
   },
   {
     id: 'alan-winfield',
@@ -957,6 +991,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/alan-winfield.jpg',
     bio: 'Focus on the sustainable use of robotics. Honorary Professor at the University of York.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/alan-winfield-3b8822346/',
   },
   {
     id: 'helen-mcgloin',
@@ -966,6 +1001,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/helen-mcgloin.webp',
     bio: 'Researches environmental sustainability in the robotics industry — e-waste, reuse and repurposing, and barriers to implementing circular economy principles in industrial and consumer robotics.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/helen-mcgloin-52612765/',
   },
   // Session 7 — Built Environment and Efficiency via Robotics
   {
@@ -975,7 +1011,7 @@ export const SPEAKERS_2026: Speaker[] = [
     organization: 'EPFL',
     photoUrl: '/images/speakers/mirko-kovac-2026.jpg',
     bio: 'Develops aerial robotic systems for inspection, sensing, and intervention in challenging built and infrastructure environments.',
-    linkedIn: 'https://www.linkedin.com/in/stefanomintchev/',
+    linkedIn: 'https://www.linkedin.com/in/mirkokovac/',
     summitYear: '2026',
   },
   {
@@ -986,6 +1022,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/norhan-bayomi.jpg',
     bio: 'Combines AI, design, and technology to tackle challenges in the built environment.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/nourhanshaaban/',
   },
   {
     id: 'john-fernandez',
@@ -994,6 +1031,7 @@ export const SPEAKERS_2026: Speaker[] = [
     organization: 'MIT',
     photoUrl: '/images/speakers/john-fernandez.jpg',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/johnefernandez/',
   },
   {
     id: 'ramon-weber',
@@ -1003,6 +1041,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/ramon-weber.jpg',
     bio: 'Computational design, sustainability, and automation supporting the development of low-carbon and more efficient buildings.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/ramon-elias-weber/',
   },
   {
     id: 'stefana-parascho',
@@ -1012,6 +1051,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/stefana-parascho.jpg',
     bio: 'Explores digital production methods and robot-assisted construction processes for more sustainable building practices.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/stefanaparascho/',
   },
   {
     id: 'dylan-crow',
@@ -1021,6 +1061,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/dylan-crow.jpg',
     bio: 'Leads the development of robotic systems for roofing and solar installation in building retrofit and maintenance.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/dylancrow/',
   },
   // Session 8 — Research Pitches
   {
@@ -1029,6 +1070,7 @@ export const SPEAKERS_2026: Speaker[] = [
     title: 'Researcher',
     organization: 'Imperial College London',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/kaushikj1729/',
   },
   {
     id: 'enrica-zereik',
@@ -1043,6 +1085,7 @@ export const SPEAKERS_2026: Speaker[] = [
     title: 'Researcher',
     organization: 'EPFL',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/kevinholdcroft/',
   },
   {
     id: 'galen-brown',
@@ -1050,6 +1093,7 @@ export const SPEAKERS_2026: Speaker[] = [
     title: 'Researcher',
     organization: 'Worcester Polytechnic Institute',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/galen-brown-83094a163/',
   },
   // Session 9 — Water Access and Conservation
   {
@@ -1060,6 +1104,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/simona-aracri.jpg',
     bio: 'Works on marine robotics and autonomous surface vehicles for environmental monitoring, with relevance to water resilience and conservation.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/simona-aracri-670bb45a/',
   },
   {
     id: 'andre-farinha',
@@ -1069,6 +1114,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/andre-farinha.jpg',
     bio: 'Unmanned aircraft designer and robotics developer with experience from concept to field trials, including UAV deployments for extreme environments.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/andre-farinha-b547a54b/',
   },
   {
     id: 'adrien-desjardins',
@@ -1078,6 +1124,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/adrien-desjardins.jpg',
     bio: 'Imaging and sensing modalities and autonomous robotics, with marine and biomedical applications relevant to aquatic conservation.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/adrien-desjardins-aa16b7/',
   },
   {
     id: 'guillaume-fery',
@@ -1087,6 +1134,7 @@ export const SPEAKERS_2026: Speaker[] = [
     photoUrl: '/images/speakers/guillaume-fery.jpg',
     bio: 'Specialist in climate adaptation and the resilience of water-sector infrastructure, with experience in water utilities, digital innovation, and emerging technologies.',
     summitYear: '2026',
+    linkedIn: 'https://www.linkedin.com/in/gfery/',
   },
 ];
 
@@ -1274,27 +1322,32 @@ export const ORGANIZERS: TeamMember[] = [
     name: 'Berk Çallı',
     organization: 'Worcester Polytechnic Institute',
     photoUrl: '/images/team/berk-calli.png',
+    linkedIn: 'https://www.linkedin.com/in/berk-calli-6313461a/',
   },
   {
     id: 'raphael-zufferey-team',
     name: 'Raphael Zufferey',
     organization: 'Massachusetts Institute of Technology',
     photoUrl: '/images/team/raphael-zufferey.jpg',
+    linkedIn: 'https://www.linkedin.com/in/raphael-zufferey/',
   },
   {
     id: 'heather-leson-team',
     name: 'Heather Leson',
     photoUrl: '/images/team/heather-leson.png',
+    linkedIn: 'https://www.linkedin.com/in/heatherleson/',
   },
   {
     id: 'shilpa-patel-team',
     name: 'Shilpa Patel',
     photoUrl: '/images/team/shilpa-patel.jpg',
+    linkedIn: 'https://www.linkedin.com/in/shilpa-patel-355144/',
   },
   {
     id: 'anahita-laverack-team',
     name: 'Anahita Laverack',
     photoUrl: '/images/team/anahita-laverack.png',
+    linkedIn: 'https://www.linkedin.com/in/anahita-laverack/',
   },
   {
     id: 'ahmed-elghareeb-team',
