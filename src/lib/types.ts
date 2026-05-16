@@ -20,7 +20,9 @@ export interface ClimateRoboticsEntry {
   description: string;
   linkedIn: string;
   coordinates: [number, number] | null;
+  coordinateSource: 'city' | 'country';
   logoUrl: string | null;
+  logoFallbackUrl: string | null;
 }
 
 export interface MapFilters {

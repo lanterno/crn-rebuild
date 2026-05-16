@@ -4,6 +4,7 @@
  */
 import type { ClimateRoboticsEntry } from '@/lib/types';
 import { ROBOTICS_TYPE_COLORS } from '@/lib/types';
+import { LINKS } from '@/lib/constants';
 
 interface Props {
   entries: ClimateRoboticsEntry[];
@@ -16,19 +17,32 @@ const continents = [...new Set(entries.map(e => e.continentHQ).filter(Boolean))]
 const roboticsTypes = [...new Set(entries.map(e => e.roboticsType).filter(Boolean))].sort();
 const applications = [...new Set(entries.map(e => e.mainApplication).filter(Boolean))].sort();
 const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort();
+const adaptationOptions = [...new Set(entries.map(e => e.adaptationMitigation).filter(Boolean))].sort();
 
 // Pre-compute stats
 const uniqueCountries = new Set(entries.map(e => e.countryHQ).filter(Boolean)).size;
 
-// Top robotics types for quick-filter chips (sort by count desc, top 5)
+// Count per robotics type (all of them, for multi-select chips)
 const typeCounts = entries.reduce<Record<string, number>>((acc, e) => {
   if (e.roboticsType) acc[e.roboticsType] = (acc[e.roboticsType] ?? 0) + 1;
   return acc;
 }, {});
-const topTypes = Object.entries(typeCounts)
+const orderedTypes = Object.entries(typeCounts)
   .sort((a, b) => b[1] - a[1])
-  .slice(0, 5)
   .map(([name]) => name);
+
+// Decade buckets
+const DECADES = [
+  { key: 'pre2010', label: 'Pre-2010', test: (y: number | null) => y !== null && y < 2010 },
+  { key: '2010s', label: '2010s', test: (y: number | null) => y !== null && y >= 2010 && y < 2020 },
+  { key: '2020s', label: '2020s+', test: (y: number | null) => y !== null && y >= 2020 },
+] as const;
+const decadeCounts = DECADES.map(d => ({
+  ...d,
+  count: entries.filter(e => d.test(e.founded)).length,
+}));
+
+const SHEET_URL = LINKS.map.googleSpreadsheet;
 ---
 
 <!-- Leaflet CSS -->
@@ -55,6 +69,16 @@ const topTypes = Object.entries(typeCounts)
           <span class="stat-label">types</span>
         </div>
       </div>
+      <a
+        href={SHEET_URL}
+        target="_blank"
+        rel="noopener"
+        class="add-org-cta"
+        title="Open the public Climate Robotics spreadsheet to add or edit entries"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+        Add your org
+      </a>
     </div>
 
     <!-- Search -->
@@ -80,38 +104,47 @@ const topTypes = Object.entries(typeCounts)
       <p class="search-hint"><kbd>/</kbd> to search · <kbd>esc</kbd> to clear</p>
     </div>
 
-    <!-- Quick filter chips by robotics type -->
-    <div class="quick-filters" role="group" aria-label="Quick filter by robotics type">
-      <button class="chip" data-quick-type="" type="button" data-active="true">All</button>
-      {topTypes.map(t => (
-        <button
-          class="chip"
-          data-quick-type={t}
-          type="button"
-          style={`--chip-color:${ROBOTICS_TYPE_COLORS[t] ?? '#6b7280'}`}
-        >
-          <span class="chip-dot" style={`background:${ROBOTICS_TYPE_COLORS[t] ?? '#6b7280'}`}></span>
-          {t.replace(' Robot', '')}
-          <span class="chip-count">{typeCounts[t]}</span>
-        </button>
-      ))}
+    <!-- Multi-select robotics type chips -->
+    <div class="filter-row" aria-labelledby="type-chip-label">
+      <span class="filter-row-label" id="type-chip-label">Robotics Type</span>
+      <div class="quick-filters" role="group" aria-label="Filter by robotics type">
+        <button class="chip" data-quick-type="" type="button" data-active="true">All</button>
+        {orderedTypes.map(t => (
+          <button
+            class="chip"
+            data-quick-type={t}
+            type="button"
+            style={`--chip-color:${ROBOTICS_TYPE_COLORS[t] ?? '#6b7280'}`}
+          >
+            <span class="chip-dot" style={`background:${ROBOTICS_TYPE_COLORS[t] ?? '#6b7280'}`}></span>
+            {t.replace(/ Robot$/, '')}
+            <span class="chip-count">{typeCounts[t]}</span>
+          </button>
+        ))}
+      </div>
     </div>
 
-    <!-- Filters -->
+    <!-- Founded-decade chips -->
+    <div class="filter-row" aria-labelledby="decade-chip-label">
+      <span class="filter-row-label" id="decade-chip-label">Founded</span>
+      <div class="quick-filters" role="group" aria-label="Filter by founding decade">
+        <button class="chip chip-sm" data-decade="" type="button" data-active="true">All</button>
+        {decadeCounts.map(d => (
+          <button class="chip chip-sm" data-decade={d.key} type="button">
+            {d.label}
+            <span class="chip-count">{d.count}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- Dropdown filters -->
     <div class="sidebar-filters">
       <div class="filter-group">
         <label for="filter-continent">Continent</label>
         <select id="filter-continent" class="filter-select">
           <option value="">All Continents</option>
           {continents.map(c => <option value={c}>{c}</option>)}
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label for="filter-robotics">Robotics Type</label>
-        <select id="filter-robotics" class="filter-select">
-          <option value="">All Types</option>
-          {roboticsTypes.map(r => <option value={r}>{r}</option>)}
         </select>
       </div>
 
@@ -128,6 +161,14 @@ const topTypes = Object.entries(typeCounts)
         <select id="filter-biome" class="filter-select">
           <option value="">All Biomes</option>
           {biomes.map(b => <option value={b}>{b}</option>)}
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="filter-adaptation">Climate Stance</label>
+        <select id="filter-adaptation" class="filter-select">
+          <option value="">Adaptation & Mitigation</option>
+          {adaptationOptions.map(a => <option value={a}>{a}</option>)}
         </select>
       </div>
 
@@ -363,10 +404,18 @@ const topTypes = Object.entries(typeCounts)
 
       const initials = (entry.name || '?').split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
       const safeName = escapeHtml(entry.name || '');
+      const fallbackUrl = entry.logoFallbackUrl ? escapeHtml(entry.logoFallbackUrl) : '';
+      // Two-step logo fallback: Clearbit → DDG → initials.
+      // The img element's data-fb stores the DDG URL; first onerror swaps to it
+      // and clears the handler so a second failure falls through to the parent
+      // catcher below which renders initials.
+      const onerr = fallbackUrl
+        ? `if(this.dataset.fb){this.src=this.dataset.fb;this.dataset.fb='';return;}var p=this.parentElement;this.remove();p.classList.add('fallback');p.innerHTML='<span>'+p.dataset.initials+'</span>';`
+        : `var p=this.parentElement;this.remove();p.classList.add('fallback');p.innerHTML='<span>'+p.dataset.initials+'</span>';`;
       const icon = L.divIcon({
         html: entry.logoUrl
           ? `<div class="logo-marker" style="--ring:${color}" data-initials="${initials}">
-               <img src="${entry.logoUrl}" alt="${safeName}" loading="lazy" onerror="var p=this.parentElement; this.remove(); p.classList.add('fallback'); p.innerHTML='<span>'+p.dataset.initials+'</span>';" />
+               <img src="${entry.logoUrl}" data-fb="${fallbackUrl}" alt="${safeName}" loading="lazy" onerror="${onerr}" />
              </div>`
           : `<div class="dot-marker" style="background-color: ${color}"></div>`,
         className: 'custom-marker',
@@ -444,28 +493,51 @@ const topTypes = Object.entries(typeCounts)
     const searchInput = document.getElementById('map-search');
     const searchClear = document.getElementById('search-clear');
     const continentFilter = document.getElementById('filter-continent');
-    const roboticsFilter = document.getElementById('filter-robotics');
     const applicationFilter = document.getElementById('filter-application');
     const biomeFilter = document.getElementById('filter-biome');
+    const adaptationFilter = document.getElementById('filter-adaptation');
     const clearFiltersBtn = document.getElementById('clear-filters');
     const activeCountEl = document.getElementById('active-filter-count');
     const resultsContainer = document.getElementById('sidebar-results');
     const entryCountEl = document.getElementById('entry-count');
     const countryCountEl = document.getElementById('country-count');
-    const quickChips = document.querySelectorAll('[data-quick-type]');
+    const typeChips = document.querySelectorAll('[data-quick-type]');
+    const decadeChips = document.querySelectorAll('[data-decade]');
+
+    // Multi-select state for robotics types and single-select for decade
+    const activeTypes = new Set();
+    let activeDecade = '';
+
+    const DECADE_TEST = {
+      pre2010: (y) => y !== null && y < 2010,
+      '2010s': (y) => y !== null && y >= 2010 && y < 2020,
+      '2020s': (y) => y !== null && y >= 2020,
+    };
 
     // Read URL params on init
     const params = new URLSearchParams(window.location.search);
     if (searchInput && params.get('q')) searchInput.value = params.get('q');
     if (continentFilter && params.get('continent')) continentFilter.value = params.get('continent');
-    if (roboticsFilter && params.get('type')) roboticsFilter.value = params.get('type');
     if (applicationFilter && params.get('app')) applicationFilter.value = params.get('app');
     if (biomeFilter && params.get('biome')) biomeFilter.value = params.get('biome');
+    if (adaptationFilter && params.get('adapt')) adaptationFilter.value = params.get('adapt');
+    if (params.get('type')) {
+      params.get('type').split(',').filter(Boolean).forEach(t => activeTypes.add(t));
+    }
+    if (params.get('decade') && DECADE_TEST[params.get('decade')]) {
+      activeDecade = params.get('decade');
+    }
 
-    function syncQuickChips() {
-      const t = roboticsFilter?.value || '';
-      quickChips.forEach(chip => {
-        chip.dataset.active = chip.dataset.quickType === t ? 'true' : 'false';
+    function syncTypeChips() {
+      typeChips.forEach(chip => {
+        const t = chip.dataset.quickType;
+        const active = t === '' ? activeTypes.size === 0 : activeTypes.has(t);
+        chip.dataset.active = active ? 'true' : 'false';
+      });
+    }
+    function syncDecadeChips() {
+      decadeChips.forEach(chip => {
+        chip.dataset.active = (chip.dataset.decade === activeDecade) ? 'true' : 'false';
       });
     }
 
@@ -473,9 +545,11 @@ const topTypes = Object.entries(typeCounts)
       const p = new URLSearchParams();
       if (searchInput?.value) p.set('q', searchInput.value);
       if (continentFilter?.value) p.set('continent', continentFilter.value);
-      if (roboticsFilter?.value) p.set('type', roboticsFilter.value);
       if (applicationFilter?.value) p.set('app', applicationFilter.value);
       if (biomeFilter?.value) p.set('biome', biomeFilter.value);
+      if (adaptationFilter?.value) p.set('adapt', adaptationFilter.value);
+      if (activeTypes.size > 0) p.set('type', [...activeTypes].join(','));
+      if (activeDecade) p.set('decade', activeDecade);
       const qs = p.toString();
       const newUrl = window.location.pathname + (qs ? `?${qs}` : '') + window.location.hash;
       window.history.replaceState(null, '', newUrl);
@@ -484,9 +558,10 @@ const topTypes = Object.entries(typeCounts)
     function applyFilters() {
       const search = searchInput?.value?.toLowerCase().trim() || '';
       const continent = continentFilter?.value || '';
-      const roboticsType = roboticsFilter?.value || '';
       const application = applicationFilter?.value || '';
       const biome = biomeFilter?.value || '';
+      const adaptation = adaptationFilter?.value || '';
+      const decadeTest = activeDecade && DECADE_TEST[activeDecade];
 
       markers.clearLayers();
       const visibleEntries = [];
@@ -511,9 +586,11 @@ const topTypes = Object.entries(typeCounts)
         }
 
         if (visible && continent && entry.continentHQ !== continent) visible = false;
-        if (visible && roboticsType && entry.roboticsType !== roboticsType) visible = false;
+        if (visible && activeTypes.size > 0 && !activeTypes.has(entry.roboticsType)) visible = false;
         if (visible && application && entry.mainApplication !== application) visible = false;
         if (visible && biome && entry.biomeType !== biome) visible = false;
+        if (visible && adaptation && entry.adaptationMitigation !== adaptation) visible = false;
+        if (visible && decadeTest && !decadeTest(entry.founded)) visible = false;
 
         if (visible) {
           markers.addLayer(marker);
@@ -526,7 +603,11 @@ const topTypes = Object.entries(typeCounts)
       if (countryCountEl) countryCountEl.textContent = visibleCountries.size.toString();
 
       // Active filter count
-      const activeFilters = [continent, roboticsType, application, biome].filter(Boolean).length + (search ? 1 : 0);
+      const activeFilters =
+        [continent, application, biome, adaptation].filter(Boolean).length
+        + (search ? 1 : 0)
+        + (activeTypes.size > 0 ? 1 : 0)
+        + (activeDecade ? 1 : 0);
       if (activeCountEl) {
         if (activeFilters > 0) {
           activeCountEl.textContent = activeFilters.toString();
@@ -536,10 +617,51 @@ const topTypes = Object.entries(typeCounts)
         }
       }
       if (searchClear) searchClear.hidden = !search;
-      syncQuickChips();
+      syncTypeChips();
+      syncDecadeChips();
       updateUrl();
       renderResultsList(visibleEntries);
     }
+
+    // Deep-link: open a specific org's popup when ?org=<id> is in the URL.
+    // Also keep the URL in sync as the user opens/closes popups so it's shareable.
+    let openOrgId = '';
+    function openOrg(id, options) {
+      const data = markerMap.get(id);
+      if (!data) return false;
+      const { marker, entry } = data;
+      // If filters are hiding this marker, temporarily show it
+      if (!markers.hasLayer(marker)) markers.addLayer(marker);
+      // marker-cluster's zoomToShowLayer zooms/spiderfies as needed so the
+      // marker becomes individually visible before we open its popup.
+      if (typeof markers.zoomToShowLayer === 'function') {
+        markers.zoomToShowLayer(marker, () => marker.openPopup());
+      } else {
+        map.setView(entry.coordinates, Math.max(map.getZoom(), 10), { animate: options?.animate ?? true });
+        setTimeout(() => marker.openPopup(), options?.animate === false ? 0 : 300);
+      }
+      return true;
+    }
+
+    function setOrgInUrl(id) {
+      openOrgId = id || '';
+      const p = new URLSearchParams(window.location.search);
+      if (id) p.set('org', id);
+      else p.delete('org');
+      const qs = p.toString();
+      window.history.replaceState(null, '', window.location.pathname + (qs ? `?${qs}` : '') + window.location.hash);
+    }
+
+    map.on('popupopen', (e) => {
+      // Find the marker whose popup just opened and write its id to the URL
+      for (const [id, { marker }] of markerMap.entries()) {
+        if (marker.getPopup && marker.getPopup() === e.popup) {
+          setOrgInUrl(id);
+          break;
+        }
+      }
+    });
+    map.on('popupclose', () => setOrgInUrl(''));
 
     function renderResultsList(list) {
       if (!resultsContainer) return;
@@ -561,11 +683,16 @@ const topTypes = Object.entries(typeCounts)
       resultsContainer.innerHTML = displayEntries.map(entry => {
         const color = typeColors[entry.roboticsType] || '#6b7280';
         const initials = (entry.name || '?').split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+        const fbUrl = entry.logoFallbackUrl ? escapeHtml(entry.logoFallbackUrl) : '';
+        // Two-step fallback: Clearbit → DDG → initials.
+        const onerr = fbUrl
+          ? `if(this.dataset.fb){this.src=this.dataset.fb;this.dataset.fb='';return;}this.style.display='none';this.parentElement.classList.add('logo-fallback');this.parentElement.innerHTML='<span>${initials}</span>';`
+          : `this.style.display='none';this.parentElement.classList.add('logo-fallback');this.parentElement.innerHTML='<span>${initials}</span>';`;
         return `
           <button class="result-card" data-id="${entry.id}" type="button">
             <div class="result-logo" style="--ring:${color}">
               ${entry.logoUrl
-                ? `<img src="${entry.logoUrl}" alt="" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('logo-fallback'); this.parentElement.innerHTML='<span>${initials}</span>'" />`
+                ? `<img src="${entry.logoUrl}" data-fb="${fbUrl}" alt="" loading="lazy" onerror="${onerr}" />`
                 : `<span class="logo-initials" style="background:${color}">${initials}</span>`
               }
             </div>
@@ -591,12 +718,7 @@ const topTypes = Object.entries(typeCounts)
       resultsContainer.querySelectorAll('.result-card').forEach(card => {
         card.addEventListener('click', () => {
           const id = card.dataset.id;
-          const data = markerMap.get(id);
-          if (data) {
-            const { marker, entry } = data;
-            map.setView(entry.coordinates, 10, { animate: true });
-            marker.openPopup();
-          }
+          if (id) openOrg(id);
         });
       });
     }
@@ -604,18 +726,20 @@ const topTypes = Object.entries(typeCounts)
     function clearAllFilters() {
       if (searchInput) searchInput.value = '';
       if (continentFilter) continentFilter.value = '';
-      if (roboticsFilter) roboticsFilter.value = '';
       if (applicationFilter) applicationFilter.value = '';
       if (biomeFilter) biomeFilter.value = '';
+      if (adaptationFilter) adaptationFilter.value = '';
+      activeTypes.clear();
+      activeDecade = '';
       applyFilters();
     }
 
     // Event listeners
     searchInput?.addEventListener('input', debounce(applyFilters, 250));
     continentFilter?.addEventListener('change', applyFilters);
-    roboticsFilter?.addEventListener('change', () => { syncQuickChips(); applyFilters(); });
     applicationFilter?.addEventListener('change', applyFilters);
     biomeFilter?.addEventListener('change', applyFilters);
+    adaptationFilter?.addEventListener('change', applyFilters);
 
     searchClear?.addEventListener('click', () => {
       if (searchInput) searchInput.value = '';
@@ -625,10 +749,24 @@ const topTypes = Object.entries(typeCounts)
 
     clearFiltersBtn?.addEventListener('click', clearAllFilters);
 
-    quickChips.forEach(chip => {
+    typeChips.forEach(chip => {
       chip.addEventListener('click', () => {
         const t = chip.dataset.quickType || '';
-        if (roboticsFilter) roboticsFilter.value = t;
+        if (t === '') {
+          activeTypes.clear();
+        } else if (activeTypes.has(t)) {
+          activeTypes.delete(t);
+        } else {
+          activeTypes.add(t);
+        }
+        applyFilters();
+      });
+    });
+
+    decadeChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const d = chip.dataset.decade || '';
+        activeDecade = (activeDecade === d) ? '' : d; // toggle single-select
         applyFilters();
       });
     });
@@ -673,8 +811,14 @@ const topTypes = Object.entries(typeCounts)
       }
     });
 
-    // Initial render (will also pick up URL params)
+    // Initial render (picks up URL params for filters)
     applyFilters();
+
+    // If the URL has ?org=<id>, open that org's popup after layout settles
+    const orgParam = params.get('org');
+    if (orgParam) {
+      setTimeout(() => openOrg(orgParam, { animate: false }), 250);
+    }
 
     // Tiny HTML-escape util
     function escapeHtml(str) {
@@ -782,6 +926,29 @@ const topTypes = Object.entries(typeCounts)
     margin-top: 0.25rem;
   }
 
+  .add-org-cta {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3125rem;
+    margin-top: 0.875rem;
+    padding: 0.375rem 0.75rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    color: white;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .add-org-cta:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.55);
+  }
+
   /* Search */
   .sidebar-search {
     padding: 0.875rem 1.5rem 0.625rem;
@@ -860,13 +1027,26 @@ const topTypes = Object.entries(typeCounts)
     color: #6b7280;
   }
 
+  /* Filter rows (label + chip group) */
+  .filter-row {
+    padding: 0.5rem 1.5rem 0.625rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+  .filter-row-label {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.4375rem;
+  }
+
   /* Quick filter chips */
   .quick-filters {
-    padding: 0 1.5rem 0.75rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.375rem;
-    border-bottom: 1px solid #f3f4f6;
   }
 
   .chip {
@@ -894,6 +1074,11 @@ const topTypes = Object.entries(typeCounts)
     border-color: var(--chip-color, #1e40af);
     color: #111827;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .chip-sm {
+    padding: 0.25rem 0.5625rem;
+    font-size: 0.6875rem;
   }
 
   .chip-dot {

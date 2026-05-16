@@ -3,6 +3,9 @@
  */
 
 import type { ClimateRoboticsEntry } from './types';
+import geocodeCacheRaw from './geocode-cache.json' with { type: 'json' };
+
+const geocodeCache = geocodeCacheRaw as Record<string, [number, number]>;
 
 // Google Sheets public CSV export URL
 const SPREADSHEET_ID = '1rFJPB4g8d21JJkzxu9Ro668cL5H66HUIQCD0pNWwO74';
@@ -183,39 +186,56 @@ function parseCSVLine(line: string): string[] {
 }
 
 /**
- * Get coordinates for a country name
+ * Get coordinates for a country name (centroid)
  */
-function getCoordinates(country: string): [number, number] | null {
+function getCountryCoordinates(country: string): [number, number] | null {
   if (!country) return null;
-  
-  // Try direct lookup
   const coords = COUNTRY_COORDINATES[country];
   if (coords) return coords;
-  
-  // Try case-insensitive lookup
-  const normalizedCountry = country.trim();
+  const normalized = country.trim();
   for (const [key, value] of Object.entries(COUNTRY_COORDINATES)) {
-    if (key.toLowerCase() === normalizedCountry.toLowerCase()) {
-      return value;
-    }
+    if (key.toLowerCase() === normalized.toLowerCase()) return value;
   }
-  
   return null;
 }
 
 /**
- * Generate a favicon URL from website domain
- * Uses multiple fallback services for better coverage
+ * Build the geocode-cache key for a single org.
+ * Must match the key written by scripts/geocode-orgs.ts.
  */
-function getFaviconUrl(website: string): string | null {
-  if (!website) return null;
-  
+export function geocodeKey(name: string, country: string): string {
+  return `${name.trim().toLowerCase()}|${country.trim().toLowerCase()}`;
+}
+
+/**
+ * Get the best available coordinates for an org: prefer cached city-level,
+ * fall back to country centroid. Returns null if neither is available.
+ */
+function getOrgCoordinates(name: string, country: string): { coords: [number, number]; source: 'city' | 'country' } | null {
+  const cityCoords = geocodeCache[geocodeKey(name, country)];
+  if (cityCoords) return { coords: cityCoords, source: 'city' };
+  const countryCoords = getCountryCoordinates(country);
+  if (countryCoords) return { coords: countryCoords, source: 'country' };
+  return null;
+}
+
+/**
+ * Generate logo URLs from website domain.
+ * Primary: Google's s2 favicon service at 128px (broad coverage, sharper).
+ * Fallback: DuckDuckGo's ip3 favicon service (different cache, catches misses).
+ * Clearbit's free logo API was retired in 2024, so we don't use it.
+ */
+function getLogoUrls(website: string): { primary: string | null; fallback: string | null } {
+  if (!website) return { primary: null, fallback: null };
   try {
     const url = new URL(website.startsWith('http') ? website : `https://${website}`);
-    // Use DuckDuckGo's favicon service - more reliable than Google's
-    return `https://icons.duckduckgo.com/ip3/${url.hostname}.ico`;
+    const host = url.hostname.replace(/^www\./, '');
+    return {
+      primary: `https://www.google.com/s2/favicons?domain=${host}&sz=128`,
+      fallback: `https://icons.duckduckgo.com/ip3/${url.hostname}.ico`,
+    };
   } catch {
-    return null;
+    return { primary: null, fallback: null };
   }
 }
 
@@ -228,11 +248,11 @@ function transformRow(row: Record<string, string>, index: number): ClimateRoboti
   
   const website = row['Website'] ?? '';
   const countryHQ = row['Country HQ'] ?? '';
-  const coordinates = getCoordinates(countryHQ);
-  
-  // Skip entries without valid coordinates
-  if (!coordinates) return null;
-  
+  const placed = getOrgCoordinates(name.trim(), countryHQ);
+
+  // Skip entries without any resolvable location
+  if (!placed) return null;
+
   const founded = parseInt(row['Founded'] ?? '', 10);
   
   // Handle deployment countries - column has trailing space in header
@@ -245,7 +265,8 @@ function transformRow(row: Record<string, string>, index: number): ClimateRoboti
   // The "Robotics Type" column carries the type (Aerial Robot, Ground Robot, etc.)
   // (older versions of the sheet used a duplicate "Robotics" header — kept as fallback.)
   const roboticsType = row['Robotics Type'] || row['Robotics_1'] || 'Other';
-  
+  const logos = getLogoUrls(website);
+
   return {
     id: `entry-${index}`,
     name: name.trim(),
@@ -263,8 +284,10 @@ function transformRow(row: Record<string, string>, index: number): ClimateRoboti
     biomeType: row['Biome Type'] ?? '',
     description: row['Describe what the Robotics solutions does in one sentence.'] ?? '',
     linkedIn: row['LinkedIn Page'] ?? '',
-    coordinates,
-    logoUrl: getFaviconUrl(website),
+    coordinates: placed.coords,
+    coordinateSource: placed.source,
+    logoUrl: logos.primary,
+    logoFallbackUrl: logos.fallback,
   };
 }
 
