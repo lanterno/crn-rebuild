@@ -1,81 +1,138 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { LINKS, SITE } from '@/lib/constants';
+
+const criteria = [
+  {
+    n: '1',
+    title: 'Be Kind',
+    description: 'Treat every member with respect and patience — regardless of background, role, or experience level.',
+  },
+  {
+    n: '2',
+    title: 'Be a Giver, Not a Taker',
+    description: 'Share resources, answer questions, and contribute knowledge. We grow by lifting each other up.',
+  },
+  {
+    n: '3',
+    title: 'Live the Code of Conduct',
+    description: 'Read it, internalize it, embody it. It exists to keep this space welcoming for everyone.',
+  },
+];
 ---
 
 <BaseLayout title="Join Our Slack" description={`Join the Climate Robotics Network Slack community - ${SITE.stats.members} members across ${SITE.stats.countries} countries.`}>
-  <!-- Hero -->
-  <section class="relative h-[300px] md:h-[400px]">
-    <img
-      src="/images/slack-hero.jpg"
-      alt="Tropical forest with sunlight"
-      class="w-full h-full object-cover"
-    />
-    <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-      <a
-        href={LINKS.slack.codeOfConduct}
-        target="_blank"
-        rel="noopener"
-        class="px-8 py-4 bg-gray-700/80 text-white font-semibold uppercase tracking-wider hover:bg-gray-700 transition-colors rounded"
-      >
-        Code of Conduct
-      </a>
+  {/* ─── HERO ─── */}
+  <section class="relative overflow-hidden text-white min-h-[60vh] flex items-center">
+    <div class="absolute inset-0">
+      <img src="/images/slack-hero.jpg" alt="Tropical forest canopy" class="w-full h-full object-cover" loading="eager" />
+      <div class="absolute inset-0 bg-gradient-to-br from-crn-navy/85 via-crn-navy/65 to-transparent"></div>
     </div>
-  </section>
 
-  <!-- Community Info -->
-  <section class="py-16 bg-white">
-    <div class="container mx-auto px-4">
-      <div class="max-w-2xl mx-auto text-center">
-        <h1 class="text-3xl font-heading font-semibold mb-6">
-          We are an Open Community
-        </h1>
-        
-        <p class="text-lg text-gray-600 mb-8">
-          Join our growing community of <strong>{SITE.stats.members} members</strong> across <strong>{SITE.stats.countries} countries</strong>!
-        </p>
-        
-        <p class="text-gray-600 mb-8">
-          We're building a diverse, multi-cultural community of mission-led people using appropriate
-          technology to confront climate-related challenges.
-        </p>
-
-        <div class="bg-gray-50 rounded-lg p-8 mb-8">
-          <p class="text-gray-700 mb-6">
-            We simply have 3 criteria for joining :)
-          </p>
-          <ul class="space-y-3 text-left max-w-sm mx-auto">
-            <li class="flex items-center gap-3">
-              <span class="w-8 h-8 bg-crn-blue text-white rounded-full flex items-center justify-center text-sm font-semibold">1</span>
-              <span class="font-semibold">Be Kind</span>
-            </li>
-            <li class="flex items-center gap-3">
-              <span class="w-8 h-8 bg-crn-blue text-white rounded-full flex items-center justify-center text-sm font-semibold">2</span>
-              <span class="font-semibold">Be a Giver not a Taker</span>
-            </li>
-            <li class="flex items-center gap-3">
-              <span class="w-8 h-8 bg-crn-blue text-white rounded-full flex items-center justify-center text-sm font-semibold">3</span>
-              <span class="font-semibold">Be One with the Code of Conduct</span>
-            </li>
-          </ul>
+    <div class="relative container mx-auto px-4 py-20">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-crn-green/15 border border-crn-green/40 rounded-full text-crn-green text-xs font-semibold uppercase tracking-wider mb-6">
+          <span class="w-1.5 h-1.5 bg-crn-green rounded-full animate-pulse"></span>
+          {SITE.stats.members} members · {SITE.stats.countries} countries
         </div>
-
-        <p class="text-gray-600 mb-8">
-          In short, be primed to be kind and helpful to others in the community rather than seeking
-          personal benefit.
-          <span class="text-sm text-gray-500">(h/t Voyagers.io)</span>
+        <h1 class="font-heading font-bold text-5xl md:text-6xl lg:text-7xl leading-[0.95] mb-6">
+          We are an
+          <span class="block text-transparent bg-clip-text bg-gradient-to-r from-crn-green via-emerald-400 to-teal-300">Open Community.</span>
+        </h1>
+        <p class="text-lg md:text-xl text-white/80 max-w-2xl mb-10 leading-relaxed">
+          A diverse, multi-cultural community of mission-led people using appropriate technology to confront climate-related challenges. Join us.
         </p>
-
         <a
           href={LINKS.slack.invite}
           target="_blank"
           rel="noopener"
-          class="inline-flex items-center gap-3 px-8 py-4 bg-crn-blue text-white font-semibold uppercase tracking-wider hover:bg-crn-blue-dark transition-colors rounded"
+          class="inline-flex items-center gap-3 px-8 py-4 bg-crn-green text-white font-bold uppercase tracking-wider rounded-lg hover:bg-crn-green-dark transition-colors shadow-xl shadow-crn-green/30"
         >
-          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>
-          </svg>
+          <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>
           Join Us on Slack
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* ─── 3 CRITERIA ─── */}
+  <section class="py-20 lg:py-28 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-2xl mx-auto">
+        <div class="text-xs font-semibold uppercase tracking-[0.2em] text-crn-blue mb-3">
+          The Vibe
+        </div>
+        <h2 class="font-heading font-bold text-4xl md:text-5xl text-gray-900 mb-4 leading-tight">
+          Three simple criteria
+        </h2>
+        <p class="text-gray-600 text-lg">
+          Read them. Mean them. Then come on in.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {criteria.map(c => (
+          <div class="relative p-8 bg-gray-50 rounded-2xl hover:bg-white hover:shadow-2xl transition-all duration-300 border border-transparent hover:border-gray-100">
+            <div class="w-12 h-12 bg-gradient-to-br from-crn-blue to-crn-blue-dark text-white rounded-xl flex items-center justify-center font-heading font-bold text-xl mb-6 shadow-lg">
+              {c.n}
+            </div>
+            <h3 class="font-heading font-bold text-2xl text-gray-900 mb-3">{c.title}</h3>
+            <p class="text-gray-600 leading-relaxed">{c.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <p class="text-center text-gray-500 text-sm italic mt-10">
+        In short: be primed to be kind and helpful, not seeking personal benefit. <span class="text-gray-400">(h/t Voyagers.io)</span>
+      </p>
+    </div>
+  </section>
+
+  {/* ─── CODE OF CONDUCT + JOIN — split card ─── */}
+  <section class="py-20 lg:py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        {/* CoC */}
+        <a
+          href={LINKS.slack.codeOfConduct}
+          target="_blank"
+          rel="noopener"
+          class="group relative overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 p-8 md:p-10 flex flex-col"
+        >
+          <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-crn-blue group-hover:scale-110 transition-all duration-300">
+            <svg class="w-7 h-7 text-crn-blue group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+          </div>
+          <h3 class="font-heading font-bold text-2xl text-gray-900 mb-3">Read the Code of Conduct</h3>
+          <p class="text-gray-600 mb-6 flex-1">
+            We follow the Slack Community CoC. Spend a minute with it before you join — knowing the rules makes for a better experience.
+          </p>
+          <span class="inline-flex items-center gap-1 text-crn-blue font-bold uppercase tracking-wider text-sm group-hover:gap-2 transition-all">
+            Open the CoC
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+          </span>
+        </a>
+
+        {/* Join */}
+        <a
+          href={LINKS.slack.invite}
+          target="_blank"
+          rel="noopener"
+          class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-crn-blue to-crn-blue-dark text-white shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 p-8 md:p-10 flex flex-col"
+        >
+          <div class="absolute top-0 right-0 w-48 h-48 bg-crn-green/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div class="relative flex-1 flex flex-col">
+            <div class="w-14 h-14 bg-white/15 rounded-xl flex items-center justify-center mb-6 group-hover:bg-white group-hover:scale-110 transition-all duration-300">
+              <svg class="w-7 h-7 text-white group-hover:text-crn-blue transition-colors" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/></svg>
+            </div>
+            <h3 class="font-heading font-bold text-2xl mb-3">Get the Slack Invite</h3>
+            <p class="text-white/80 mb-6 flex-1">
+              Click through, accept the invite, introduce yourself in #welcome. Takes about 30 seconds.
+            </p>
+            <span class="inline-flex items-center gap-1 text-white font-bold uppercase tracking-wider text-sm group-hover:gap-2 transition-all">
+              Join Slack
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </span>
+          </div>
         </a>
       </div>
     </div>

@@ -1,96 +1,198 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Section from '@/components/Section.astro';
 import { LINKS, YOUTUBE } from '@/lib/constants';
+
+const topics = [
+  { label: 'Opportunities', color: 'from-emerald-500 to-green-600' },
+  { label: 'Limitations', color: 'from-amber-500 to-orange-500' },
+  { label: 'Risks', color: 'from-rose-500 to-red-600' },
+  { label: 'Ethics', color: 'from-violet-500 to-purple-600' },
+  { label: 'Deployment', color: 'from-blue-500 to-cyan-600' },
+  { label: 'Policy', color: 'from-teal-500 to-blue-500' },
+];
+
+const formats = [
+  {
+    label: 'Google Doc',
+    description: 'Inline comments. Best for sharing feedback.',
+    href: LINKS.research.whitePaperGoogleDoc,
+    icon: 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z',
+  },
+  {
+    label: 'PDF',
+    description: 'Downloadable. Best for reading offline.',
+    href: LINKS.research.whitePaperPdf,
+    icon: 'M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z',
+  },
+  {
+    label: 'Feedback Form',
+    description: 'Structured feedback. Share specific suggestions.',
+    href: LINKS.research.feedbackForm,
+    icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  },
+];
 ---
 
 <BaseLayout title="Research" description="2025 Climate Robotics White Paper - The first-ever comprehensive study on Climate Robotics.">
-  <!-- Main Content -->
-  <Section title="2025 Climate Robotics White Paper">
-    <div class="max-w-5xl mx-auto">
-      <div class="grid lg:grid-cols-2 gap-12 items-start">
-        <!-- Video Embed -->
-        <div class="aspect-video rounded-lg overflow-hidden shadow-lg">
-          <iframe
-            src={YOUTUBE.getPlaylistEmbedUrl(YOUTUBE.playlistId)}
-            title="Introducing our White Paper on Climate Robotics"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-            class="w-full h-full"
-          ></iframe>
-        </div>
+  {/* ─── HERO ─── */}
+  <section class="relative overflow-hidden bg-crn-navy text-white">
+    <div class="absolute inset-0 bg-gradient-to-br from-crn-navy via-crn-blue-dark to-crn-blue"></div>
+    <div class="absolute inset-0 opacity-25" style="background-image: radial-gradient(circle at 20% 30%, rgba(22,163,74,0.35), transparent 50%), radial-gradient(circle at 80% 70%, rgba(59,130,246,0.3), transparent 50%);"></div>
 
-        <div>
-          <p class="text-lg text-gray-600 mb-6">
-            Welcome to the first-ever study on Climate Robotics!
+    <div class="relative container mx-auto px-4 py-20 lg:py-28">
+      <div class="grid lg:grid-cols-12 gap-12 items-center max-w-7xl mx-auto">
+        <div class="lg:col-span-7">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-crn-green/15 border border-crn-green/40 rounded-full text-crn-green text-xs font-semibold uppercase tracking-wider mb-6">
+            2025 Edition · Community-Driven
+          </div>
+          <h1 class="font-heading font-bold text-5xl md:text-6xl lg:text-7xl leading-[0.95] mb-6">
+            The Climate Robotics
+            <span class="block text-transparent bg-clip-text bg-gradient-to-r from-crn-green via-emerald-400 to-teal-300">White Paper</span>
+          </h1>
+          <p class="text-lg md:text-xl text-white/75 max-w-2xl mb-10 leading-relaxed">
+            The first-ever comprehensive study on Climate Robotics. We draw on real-world examples to investigate the opportunities, limitations, and risks of using robotics in climate action.
           </p>
-          <p class="text-gray-600 mb-6">
-            We draw on real-world examples to investigate the opportunities, limitations, and risks
-            of using robotics in Climate Action. This is an Open and Community-driven White Paper,
-            which has been fully revised and updated for 2025! We welcome all feedback across all
-            disciplines.
-          </p>
-        </div>
-      </div>
-    </div>
-  </Section>
-
-  <!-- Get the 2025 Edition -->
-  <section class="bg-gray-100 py-16">
-    <div class="container mx-auto px-4">
-      <h2 class="section-title mb-12">Get the 2025 Edition!</h2>
-      <div class="max-w-4xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-          <div class="p-6">
-            <h3 class="text-xl font-heading font-semibold mb-4">Why Climate Robotics?</h3>
-            <img
-              src="/images/white-paper-mosaic.png"
-              alt="Climate Robotics White Paper Cover"
-              class="w-full rounded-lg"
-            />
+          <div class="flex flex-wrap gap-3">
+            <a
+              href={LINKS.research.whitePaperGoogleDoc}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 px-6 py-3.5 bg-crn-green text-white font-bold uppercase tracking-wider text-sm rounded-lg hover:bg-crn-green-dark transition-colors shadow-lg shadow-crn-green/25"
+            >
+              Read the Paper
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+            <a
+              href={LINKS.research.feedbackForm}
+              target="_blank"
+              rel="noopener"
+              class="inline-flex items-center gap-2 px-6 py-3.5 bg-white/10 backdrop-blur-sm border border-white/30 text-white font-bold uppercase tracking-wider text-sm rounded-lg hover:bg-white/20 transition-colors"
+            >
+              Share Feedback
+            </a>
           </div>
         </div>
 
-        <div>
-          <h3 class="text-xl font-heading font-semibold mb-4">Available in Various Formats</h3>
-          <ul class="space-y-4">
-            <li>
-              <a
-                href={LINKS.research.whitePaperGoogleDoc}
-                target="_blank"
-                rel="noopener"
-                class="link-arrow"
-              >
-                Open Google Doc Version
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-              <span class="text-gray-500 text-sm block mt-1">Share feedback by inserting comments</span>
-            </li>
-            <li>
-              <a
-                href={LINKS.research.whitePaperPdf}
-                target="_blank"
-                rel="noopener"
-                class="link-arrow"
-              >
-                PDF Version
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </a>
-              <span class="text-gray-500 text-sm block mt-1">
-                Share feedback <a href={LINKS.research.feedbackForm} target="_blank" rel="noopener" class="text-crn-blue hover:underline">using this link</a>
-              </span>
-            </li>
-          </ul>
+        <div class="lg:col-span-5">
+          <div class="relative">
+            <div class="absolute -inset-4 bg-gradient-to-br from-crn-green/20 to-crn-blue/20 rounded-3xl blur-2xl"></div>
+            <img
+              src="/images/white-paper-mosaic.png"
+              alt="Climate Robotics White Paper Cover"
+              class="relative w-full rounded-2xl shadow-2xl ring-1 ring-white/10"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <div class="mt-8 p-4 bg-crn-blue/10 rounded-lg">
-            <p class="text-sm text-gray-700">
-              <strong>Join Us on Slack</strong> to discuss the paper and connect with other climate
-              robotics practitioners and researchers.
+  {/* ─── WHAT IT COVERS ─── */}
+  <section class="py-20 lg:py-28 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="grid lg:grid-cols-12 gap-12 items-start max-w-7xl mx-auto">
+        <div class="lg:col-span-5">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-crn-blue mb-3">
+            What It Covers
+          </div>
+          <h2 class="font-heading font-bold text-4xl md:text-5xl text-gray-900 mb-6 leading-tight">
+            Honest about the<br/>opportunities — and<br/>the risks.
+          </h2>
+          <p class="text-lg text-gray-600 leading-relaxed mb-6">
+            This is an Open and Community-driven White Paper, fully revised for 2025. We welcome feedback from researchers, practitioners, policymakers, and everyone in between.
+          </p>
+          <p class="text-gray-600 leading-relaxed">
+            <strong class="text-gray-900">Robots alone won't clean up our mess.</strong> Climate Robotics has limits and risks alongside its promise — and we're committed to surfacing all three.
+          </p>
+        </div>
+
+        <div class="lg:col-span-7">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400 mb-4">
+            Key Themes
+          </div>
+          <div class="flex flex-wrap gap-2 mb-8">
+            {topics.map(t => (
+              <span class={`inline-block px-4 py-2 text-sm font-semibold text-white rounded-full bg-gradient-to-r ${t.color} shadow-sm`}>
+                {t.label}
+              </span>
+            ))}
+          </div>
+
+          <div class="aspect-video rounded-2xl overflow-hidden shadow-2xl ring-1 ring-gray-200">
+            <iframe
+              src={YOUTUBE.getPlaylistEmbedUrl(YOUTUBE.playlistId)}
+              title="Introducing our White Paper on Climate Robotics"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              class="w-full h-full"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ─── FORMATS ─── */}
+  <section class="py-20 lg:py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12 max-w-2xl mx-auto">
+        <div class="text-xs font-semibold uppercase tracking-[0.2em] text-crn-blue mb-3">
+          Three Ways to Read
+        </div>
+        <h2 class="font-heading font-bold text-4xl md:text-5xl text-gray-900 mb-4">
+          Pick your format
+        </h2>
+        <p class="text-gray-600 text-lg">
+          Read it however works for you — and tell us what you think.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {formats.map(f => (
+          <a
+            href={f.href}
+            target="_blank"
+            rel="noopener"
+            class="group relative overflow-hidden rounded-2xl bg-white shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 p-8 flex flex-col"
+          >
+            <div class="w-14 h-14 bg-crn-blue/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-crn-blue group-hover:scale-110 transition-all duration-300">
+              <svg class="w-7 h-7 text-crn-blue group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={f.icon}/></svg>
+            </div>
+            <h3 class="font-heading font-bold text-xl text-gray-900 mb-2">{f.label}</h3>
+            <p class="text-gray-600 mb-6 flex-1">{f.description}</p>
+            <span class="inline-flex items-center gap-1 text-crn-blue font-bold uppercase tracking-wider text-sm group-hover:gap-2 transition-all">
+              Open
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ─── SLACK CTA ─── */}
+  <section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="relative overflow-hidden bg-gradient-to-br from-crn-blue to-crn-blue-dark rounded-3xl max-w-5xl mx-auto p-10 md:p-16">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-crn-green/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
+
+        <div class="relative grid md:grid-cols-2 gap-8 items-center">
+          <div>
+            <h2 class="font-heading font-bold text-3xl md:text-4xl text-white mb-3 leading-tight">
+              Discuss the paper on Slack
+            </h2>
+            <p class="text-white/80 text-lg">
+              Connect with the researchers and practitioners who contributed to this paper — and help shape the next edition.
             </p>
+          </div>
+          <div class="flex md:justify-end">
+            <a href="/slack" class="inline-flex items-center gap-3 px-8 py-4 bg-white text-crn-blue font-bold uppercase tracking-wider rounded-lg hover:bg-crn-green hover:text-white transition-colors shadow-xl">
+              <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>
+              Join Our Slack
+            </a>
           </div>
         </div>
       </div>
