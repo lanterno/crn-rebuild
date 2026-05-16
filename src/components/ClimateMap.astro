@@ -16,6 +16,19 @@ const continents = [...new Set(entries.map(e => e.continentHQ).filter(Boolean))]
 const roboticsTypes = [...new Set(entries.map(e => e.roboticsType).filter(Boolean))].sort();
 const applications = [...new Set(entries.map(e => e.mainApplication).filter(Boolean))].sort();
 const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort();
+
+// Pre-compute stats
+const uniqueCountries = new Set(entries.map(e => e.countryHQ).filter(Boolean)).size;
+
+// Top robotics types for quick-filter chips (sort by count desc, top 5)
+const typeCounts = entries.reduce<Record<string, number>>((acc, e) => {
+  if (e.roboticsType) acc[e.roboticsType] = (acc[e.roboticsType] ?? 0) + 1;
+  return acc;
+}, {});
+const topTypes = Object.entries(typeCounts)
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 5)
+  .map(([name]) => name);
 ---
 
 <!-- Leaflet CSS -->
@@ -28,9 +41,20 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
   <aside class="map-sidebar" id="map-sidebar">
     <div class="sidebar-header">
       <h1 class="sidebar-title">Global Map of Climate Robotics</h1>
-      <p class="sidebar-subtitle">
-        Exploring <span id="entry-count">{entries.length}</span> organizations worldwide
-      </p>
+      <div class="sidebar-stats">
+        <div class="stat">
+          <span class="stat-num" id="entry-count">{entries.length}</span>
+          <span class="stat-label">orgs</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" id="country-count">{uniqueCountries}</span>
+          <span class="stat-label">countries</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">{roboticsTypes.length}</span>
+          <span class="stat-label">types</span>
+        </div>
+      </div>
     </div>
 
     <!-- Search -->
@@ -43,10 +67,34 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
         <input
           type="text"
           id="map-search"
-          placeholder="Search organizations..."
+          placeholder="Search name, country, application…"
           class="search-input"
+          aria-label="Search organizations"
         />
+        <button id="search-clear" class="search-clear" type="button" aria-label="Clear search" hidden>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
+        </button>
       </div>
+      <p class="search-hint"><kbd>/</kbd> to search · <kbd>esc</kbd> to clear</p>
+    </div>
+
+    <!-- Quick filter chips by robotics type -->
+    <div class="quick-filters" role="group" aria-label="Quick filter by robotics type">
+      <button class="chip" data-quick-type="" type="button" data-active="true">All</button>
+      {topTypes.map(t => (
+        <button
+          class="chip"
+          data-quick-type={t}
+          type="button"
+          style={`--chip-color:${ROBOTICS_TYPE_COLORS[t] ?? '#6b7280'}`}
+        >
+          <span class="chip-dot" style={`background:${ROBOTICS_TYPE_COLORS[t] ?? '#6b7280'}`}></span>
+          {t.replace(' Robot', '')}
+          <span class="chip-count">{typeCounts[t]}</span>
+        </button>
+      ))}
     </div>
 
     <!-- Filters -->
@@ -83,8 +131,9 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
         </select>
       </div>
 
-      <button id="clear-filters" class="clear-filters-btn">
+      <button id="clear-filters" class="clear-filters-btn" type="button">
         Clear Filters
+        <span id="active-filter-count" class="active-count" hidden>0</span>
       </button>
     </div>
 
@@ -93,9 +142,9 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
       <!-- Populated by JS -->
     </div>
 
-    <!-- Toggle button for mobile -->
-    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
-      <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <!-- Toggle button for mobile/collapse -->
+    <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar" type="button">
+      <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
         <path d="M15 18l-6-6 6-6" />
       </svg>
     </button>
@@ -104,7 +153,46 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
   <!-- Map Container -->
   <div class="map-wrapper" id="map-wrapper">
     <div id="leaflet-map" class="leaflet-map"></div>
-    
+
+    <!-- Map style toggle -->
+    <div class="map-style-toggle" role="group" aria-label="Map style">
+      <button class="style-btn" data-style="light" data-active="true" type="button" aria-label="Light map">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        Light
+      </button>
+      <button class="style-btn" data-style="dark" type="button" aria-label="Dark map">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        Dark
+      </button>
+      <button class="style-btn" data-style="satellite" type="button" aria-label="Satellite map">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10M12 2a15.3 15.3 0 0 0-4 10 15.3 15.3 0 0 0 4 10"/></svg>
+        Satellite
+      </button>
+    </div>
+
+    <!-- Reset view button -->
+    <button id="reset-view" class="reset-view-btn" type="button" aria-label="Reset map view">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg>
+      Reset view
+    </button>
+
+    <!-- Legend -->
+    <div class="map-legend" id="map-legend">
+      <button class="legend-toggle" id="legend-toggle" type="button" aria-expanded="true" aria-controls="legend-body">
+        <span class="legend-title">Robotics Type</span>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <ul class="legend-body" id="legend-body">
+        {roboticsTypes.map(t => (
+          <li class="legend-item">
+            <span class="legend-dot" style={`background:${ROBOTICS_TYPE_COLORS[t] ?? '#6b7280'}`}></span>
+            <span>{t}</span>
+            <span class="legend-count">{typeCounts[t] ?? 0}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
     <!-- Map attribution overlay -->
     <div class="map-brand">
       Climate Robotics Network
@@ -130,7 +218,7 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
       document.head.appendChild(script);
     });
   }
-  
+
   async function loadLeaflet() {
     try {
       await loadScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js');
@@ -140,37 +228,111 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
       console.error('Failed to load Leaflet:', error);
     }
   }
-  
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadLeaflet);
   } else {
     loadLeaflet();
   }
-  
+
+  // Deterministic jitter for entries sharing the same country centroid.
+  // Spreads stacked points into a small circle so each is individually clickable.
+  function jitterEntries(entries) {
+    const byCountry = new Map();
+    entries.forEach(e => {
+      if (!e.coordinates) return;
+      const key = e.countryHQ || `${e.coordinates[0]},${e.coordinates[1]}`;
+      if (!byCountry.has(key)) byCountry.set(key, []);
+      byCountry.get(key).push(e);
+    });
+
+    byCountry.forEach(group => {
+      if (group.length <= 1) return;
+      // Deterministic ordering so the same dataset always renders identically
+      group.sort((a, b) => a.id.localeCompare(b.id));
+      // Spread on a fibonacci-spiral so larger groups still look organic.
+      // ~30km offset per "ring" — big enough to be tappable, small enough to keep country context.
+      const baseLat = group[0].coordinates[0];
+      const latPerKm = 1 / 111;
+      const lngPerKm = 1 / (111 * Math.cos((baseLat * Math.PI) / 180) || 1);
+      group.forEach((e, i) => {
+        if (i === 0) return; // first stays on centroid
+        const r = Math.sqrt(i) * 22; // km
+        const theta = i * 2.39996; // golden angle (radians)
+        const dLat = r * Math.cos(theta) * latPerKm;
+        const dLng = r * Math.sin(theta) * lngPerKm;
+        e.coordinates = [e.coordinates[0] + dLat, e.coordinates[1] + dLng];
+      });
+    });
+
+    return entries;
+  }
+
+  // Base layer URLs
+  const TILE_LAYERS = {
+    light: {
+      url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+    },
+    dark: {
+      url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+    },
+    satellite: {
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics',
+      subdomains: '',
+    },
+  };
+
   function initMap() {
-    const entries = window.climateMapData || [];
+    const rawEntries = window.climateMapData || [];
     const typeColors = window.roboticsTypeColors || {};
-    
-    // Initialize map with muted style
+    const entries = jitterEntries(rawEntries.map(e => ({ ...e, coordinates: e.coordinates ? [...e.coordinates] : null })));
+
+    // Initialize map
     const map = L.map('leaflet-map', {
       center: [20, 0],
       zoom: 2,
       minZoom: 2,
       maxZoom: 18,
       zoomControl: false,
+      worldCopyJump: true,
     });
-    
-    // Add zoom control to top-right
+
     L.control.zoom({ position: 'topright' }).addTo(map);
-    
-    // CartoDB Positron (muted grayscale style)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      subdomains: 'abcd',
-      maxZoom: 20
+
+    // Tile layer (swappable via style toggle)
+    let activeStyle = 'light';
+    let tileLayer = L.tileLayer(TILE_LAYERS.light.url, {
+      attribution: TILE_LAYERS.light.attribution,
+      subdomains: TILE_LAYERS.light.subdomains,
+      maxZoom: 20,
     }).addTo(map);
-    
-    // Create marker cluster group
+
+    function setMapStyle(style) {
+      const conf = TILE_LAYERS[style];
+      if (!conf) return;
+      map.removeLayer(tileLayer);
+      tileLayer = L.tileLayer(conf.url, {
+        attribution: conf.attribution,
+        subdomains: conf.subdomains,
+        maxZoom: 20,
+      }).addTo(map);
+      activeStyle = style;
+      document.querySelectorAll('.style-btn').forEach(btn => {
+        btn.dataset.active = btn.dataset.style === style ? 'true' : 'false';
+      });
+      document.getElementById('climate-map-container')?.setAttribute('data-map-style', style);
+    }
+
+    document.querySelectorAll('.style-btn').forEach(btn => {
+      btn.addEventListener('click', () => setMapStyle(btn.dataset.style));
+    });
+
+    // Cluster group
     const markers = L.markerClusterGroup({
       chunkedLoading: true,
       spiderfyOnMaxZoom: true,
@@ -182,7 +344,6 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
         let size = 'small';
         if (count > 50) size = 'large';
         else if (count > 10) size = 'medium';
-        
         return L.divIcon({
           html: `<div class="cluster-marker cluster-${size}"><span>${count}</span></div>`,
           className: 'marker-cluster-custom',
@@ -190,22 +351,22 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
         });
       }
     });
-    
-    // Store markers by ID for filtering
+
     const markerMap = new Map();
-    
-    // Create markers for each entry
+    const initialBounds = [];
+
     entries.forEach(entry => {
       if (!entry.coordinates) return;
-      
       const [lat, lng] = entry.coordinates;
       const color = typeColors[entry.roboticsType] || '#6b7280';
-      
-      // Create custom icon with logo or colored circle
+      initialBounds.push([lat, lng]);
+
+      const initials = (entry.name || '?').split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
+      const safeName = escapeHtml(entry.name || '');
       const icon = L.divIcon({
-        html: entry.logoUrl 
-          ? `<div class="logo-marker" style="border-color: ${color}">
-               <img src="${entry.logoUrl}" alt="${entry.name}" onerror="this.style.display='none'; this.parentElement.classList.add('fallback')" />
+        html: entry.logoUrl
+          ? `<div class="logo-marker" style="--ring:${color}" data-initials="${initials}">
+               <img src="${entry.logoUrl}" alt="${safeName}" loading="lazy" onerror="var p=this.parentElement; this.remove(); p.classList.add('fallback'); p.innerHTML='<span>'+p.dataset.initials+'</span>';" />
              </div>`
           : `<div class="dot-marker" style="background-color: ${color}"></div>`,
         className: 'custom-marker',
@@ -213,148 +374,220 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
         iconAnchor: [18, 18],
         popupAnchor: [0, -18]
       });
-      
-      const marker = L.marker([lat, lng], { icon });
-      
-      // Create popup content
-      const websiteLink = entry.website 
-        ? `<a href="${entry.website.startsWith('http') ? entry.website : 'https://' + entry.website}" target="_blank" rel="noopener" class="popup-link">Visit Website →</a>`
+
+      const marker = L.marker([lat, lng], { icon, title: entry.name });
+
+      // Tooltip on hover (compact name)
+      marker.bindTooltip(entry.name, {
+        direction: 'top',
+        offset: [0, -16],
+        opacity: 0.95,
+        className: 'marker-hover-tooltip',
+      });
+
+      // Build popup content
+      const websiteHref = entry.website
+        ? (entry.website.startsWith('http') ? entry.website : 'https://' + entry.website)
         : '';
-      
-      const linkedInLink = entry.linkedIn
-        ? `<a href="${entry.linkedIn}" target="_blank" rel="noopener" class="popup-linkedin">LinkedIn</a>`
-        : '';
-      
+
+      const tagBits = [];
+      if (entry.roboticsType) tagBits.push(`<span class="popup-tag popup-tag-type" style="background:${color}1f;color:${color};border-color:${color}55">${escapeHtml(entry.roboticsType)}</span>`);
+      if (entry.mainApplication) tagBits.push(`<span class="popup-tag">${escapeHtml(entry.mainApplication)}</span>`);
+      if (entry.biomeType) tagBits.push(`<span class="popup-tag">${escapeHtml(entry.biomeType)}</span>`);
+      if (entry.adaptationMitigation) tagBits.push(`<span class="popup-tag">${escapeHtml(entry.adaptationMitigation)}</span>`);
+
+      const metaBits = [];
+      if (entry.founded) metaBits.push(`<span><strong>Founded</strong> ${entry.founded}</span>`);
+      if (entry.deploymentCountries && entry.deploymentCountries.length > 0) {
+        const dc = entry.deploymentCountries.slice(0, 4).join(', ');
+        const more = entry.deploymentCountries.length > 4 ? ` +${entry.deploymentCountries.length - 4} more` : '';
+        metaBits.push(`<span><strong>Deployed in</strong> ${escapeHtml(dc)}${more}</span>`);
+      }
+
+      const linkBits = [];
+      if (websiteHref) linkBits.push(`<a href="${websiteHref}" target="_blank" rel="noopener" class="popup-link">Website <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M8 7h9v9"/></svg></a>`);
+      if (entry.linkedIn) linkBits.push(`<a href="${entry.linkedIn}" target="_blank" rel="noopener" class="popup-linkedin">LinkedIn</a>`);
+
       marker.bindPopup(`
         <div class="map-popup">
           <div class="popup-header">
-            ${entry.logoUrl ? `<img src="${entry.logoUrl}" alt="" class="popup-logo" />` : ''}
-            <div>
-              <h3 class="popup-title">${entry.name}</h3>
-              <p class="popup-location">${entry.countryHQ}${entry.continentHQ ? ` • ${entry.continentHQ}` : ''}</p>
+            ${entry.logoUrl ? `<img src="${entry.logoUrl}" alt="" class="popup-logo" onerror="this.style.display='none'" />` : ''}
+            <div class="popup-header-text">
+              <h3 class="popup-title">${escapeHtml(entry.name)}</h3>
+              <p class="popup-location">${escapeHtml(entry.countryHQ || '')}${entry.continentHQ ? ` · ${escapeHtml(entry.continentHQ)}` : ''}</p>
             </div>
           </div>
-          ${entry.description ? `<p class="popup-description">${entry.description}</p>` : ''}
-          <div class="popup-tags">
-            ${entry.roboticsType ? `<span class="popup-tag" style="background-color: ${color}20; color: ${color}">${entry.roboticsType}</span>` : ''}
-            ${entry.mainApplication ? `<span class="popup-tag">${entry.mainApplication}</span>` : ''}
-            ${entry.biomeType ? `<span class="popup-tag">${entry.biomeType}</span>` : ''}
-          </div>
-          <div class="popup-actions">
-            ${websiteLink}
-            ${linkedInLink}
-          </div>
+          ${entry.description ? `<p class="popup-description">${escapeHtml(entry.description)}</p>` : ''}
+          ${metaBits.length ? `<div class="popup-meta">${metaBits.join('')}</div>` : ''}
+          ${tagBits.length ? `<div class="popup-tags">${tagBits.join('')}</div>` : ''}
+          ${linkBits.length ? `<div class="popup-actions">${linkBits.join('')}</div>` : ''}
         </div>
       `, {
-        maxWidth: 320,
+        maxWidth: 340,
         className: 'custom-popup'
       });
-      
+
       markerMap.set(entry.id, { marker, entry });
       markers.addLayer(marker);
     });
-    
+
     map.addLayer(markers);
-    
-    // Fit bounds to show all markers
-    if (entries.length > 0) {
-      const validEntries = entries.filter(e => e.coordinates);
-      if (validEntries.length > 0) {
-        const bounds = L.latLngBounds(validEntries.map(e => e.coordinates));
-        map.fitBounds(bounds, { padding: [50, 50] });
-      }
+
+    // Fit bounds
+    let homeBounds = null;
+    if (initialBounds.length > 0) {
+      homeBounds = L.latLngBounds(initialBounds);
+      map.fitBounds(homeBounds, { padding: [50, 50] });
     }
-    
-    // Filter functionality
+
+    // ─── Filter state & URL sync ───
     const searchInput = document.getElementById('map-search');
+    const searchClear = document.getElementById('search-clear');
     const continentFilter = document.getElementById('filter-continent');
     const roboticsFilter = document.getElementById('filter-robotics');
     const applicationFilter = document.getElementById('filter-application');
     const biomeFilter = document.getElementById('filter-biome');
     const clearFiltersBtn = document.getElementById('clear-filters');
+    const activeCountEl = document.getElementById('active-filter-count');
     const resultsContainer = document.getElementById('sidebar-results');
     const entryCountEl = document.getElementById('entry-count');
-    
+    const countryCountEl = document.getElementById('country-count');
+    const quickChips = document.querySelectorAll('[data-quick-type]');
+
+    // Read URL params on init
+    const params = new URLSearchParams(window.location.search);
+    if (searchInput && params.get('q')) searchInput.value = params.get('q');
+    if (continentFilter && params.get('continent')) continentFilter.value = params.get('continent');
+    if (roboticsFilter && params.get('type')) roboticsFilter.value = params.get('type');
+    if (applicationFilter && params.get('app')) applicationFilter.value = params.get('app');
+    if (biomeFilter && params.get('biome')) biomeFilter.value = params.get('biome');
+
+    function syncQuickChips() {
+      const t = roboticsFilter?.value || '';
+      quickChips.forEach(chip => {
+        chip.dataset.active = chip.dataset.quickType === t ? 'true' : 'false';
+      });
+    }
+
+    function updateUrl() {
+      const p = new URLSearchParams();
+      if (searchInput?.value) p.set('q', searchInput.value);
+      if (continentFilter?.value) p.set('continent', continentFilter.value);
+      if (roboticsFilter?.value) p.set('type', roboticsFilter.value);
+      if (applicationFilter?.value) p.set('app', applicationFilter.value);
+      if (biomeFilter?.value) p.set('biome', biomeFilter.value);
+      const qs = p.toString();
+      const newUrl = window.location.pathname + (qs ? `?${qs}` : '') + window.location.hash;
+      window.history.replaceState(null, '', newUrl);
+    }
+
     function applyFilters() {
-      const search = searchInput?.value?.toLowerCase() || '';
+      const search = searchInput?.value?.toLowerCase().trim() || '';
       const continent = continentFilter?.value || '';
       const roboticsType = roboticsFilter?.value || '';
       const application = applicationFilter?.value || '';
       const biome = biomeFilter?.value || '';
-      
+
       markers.clearLayers();
-      let visibleCount = 0;
       const visibleEntries = [];
-      
+      const visibleCountries = new Set();
+
       markerMap.forEach(({ marker, entry }) => {
         let visible = true;
-        
-        // Search filter
+
         if (search) {
-          const matchesSearch = 
-            entry.name.toLowerCase().includes(search) ||
-            entry.description?.toLowerCase().includes(search) ||
-            entry.countryHQ?.toLowerCase().includes(search);
-          if (!matchesSearch) visible = false;
+          const hay = [
+            entry.name,
+            entry.description,
+            entry.countryHQ,
+            entry.continentHQ,
+            entry.roboticsType,
+            entry.mainApplication,
+            entry.additionalApplication,
+            entry.biomeType,
+            ...(entry.deploymentCountries || []),
+          ].join(' ').toLowerCase();
+          if (!hay.includes(search)) visible = false;
         }
-        
-        // Other filters
+
         if (visible && continent && entry.continentHQ !== continent) visible = false;
         if (visible && roboticsType && entry.roboticsType !== roboticsType) visible = false;
         if (visible && application && entry.mainApplication !== application) visible = false;
         if (visible && biome && entry.biomeType !== biome) visible = false;
-        
+
         if (visible) {
           markers.addLayer(marker);
-          visibleCount++;
           visibleEntries.push(entry);
+          if (entry.countryHQ) visibleCountries.add(entry.countryHQ);
         }
       });
-      
-      // Update count
-      if (entryCountEl) {
-        entryCountEl.textContent = visibleCount.toString();
+
+      if (entryCountEl) entryCountEl.textContent = visibleEntries.length.toString();
+      if (countryCountEl) countryCountEl.textContent = visibleCountries.size.toString();
+
+      // Active filter count
+      const activeFilters = [continent, roboticsType, application, biome].filter(Boolean).length + (search ? 1 : 0);
+      if (activeCountEl) {
+        if (activeFilters > 0) {
+          activeCountEl.textContent = activeFilters.toString();
+          activeCountEl.hidden = false;
+        } else {
+          activeCountEl.hidden = true;
+        }
       }
-      
-      // Update results list
+      if (searchClear) searchClear.hidden = !search;
+      syncQuickChips();
+      updateUrl();
       renderResultsList(visibleEntries);
     }
-    
-    function renderResultsList(entries) {
+
+    function renderResultsList(list) {
       if (!resultsContainer) return;
-      
-      if (entries.length === 0) {
-        resultsContainer.innerHTML = '<p class="no-results">No organizations match your filters.</p>';
+
+      if (list.length === 0) {
+        resultsContainer.innerHTML = `
+          <div class="empty-state">
+            <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <p>No organizations match these filters.</p>
+            <button class="empty-clear" type="button">Clear filters</button>
+          </div>
+        `;
+        resultsContainer.querySelector('.empty-clear')?.addEventListener('click', () => clearAllFilters());
         return;
       }
-      
-      // Limit to first 100 for performance
-      const displayEntries = entries.slice(0, 100);
-      
+
+      const displayEntries = list.slice(0, 100);
+
       resultsContainer.innerHTML = displayEntries.map(entry => {
         const color = typeColors[entry.roboticsType] || '#6b7280';
+        const initials = (entry.name || '?').split(' ').map(w => w[0] || '').join('').slice(0, 2).toUpperCase();
         return `
-          <button class="result-card" data-id="${entry.id}">
-            <div class="result-logo" style="border-color: ${color}">
-              ${entry.logoUrl 
-                ? `<img src="${entry.logoUrl}" alt="" onerror="this.style.display='none'" />`
-                : `<div class="result-logo-fallback" style="background-color: ${color}"></div>`
+          <button class="result-card" data-id="${entry.id}" type="button">
+            <div class="result-logo" style="--ring:${color}">
+              ${entry.logoUrl
+                ? `<img src="${entry.logoUrl}" alt="" loading="lazy" onerror="this.style.display='none'; this.parentElement.classList.add('logo-fallback'); this.parentElement.innerHTML='<span>${initials}</span>'" />`
+                : `<span class="logo-initials" style="background:${color}">${initials}</span>`
               }
             </div>
             <div class="result-info">
-              <h4 class="result-name">${entry.name}</h4>
-              <p class="result-location">${entry.countryHQ || 'Unknown'}</p>
-              ${entry.mainApplication ? `<span class="result-tag">${entry.mainApplication}</span>` : ''}
+              <h4 class="result-name">${escapeHtml(entry.name)}</h4>
+              <p class="result-location">
+                <span class="result-type-dot" style="background:${color}"></span>
+                ${escapeHtml(entry.countryHQ || 'Unknown')}${entry.founded ? ` · ${entry.founded}` : ''}
+              </p>
+              ${entry.mainApplication ? `<span class="result-tag">${escapeHtml(entry.mainApplication)}</span>` : ''}
             </div>
           </button>
         `;
       }).join('');
-      
-      if (entries.length > 100) {
-        resultsContainer.innerHTML += `<p class="results-overflow">Showing 100 of ${entries.length} results</p>`;
+
+      if (list.length > 100) {
+        resultsContainer.insertAdjacentHTML(
+          'beforeend',
+          `<p class="results-overflow">Showing 100 of ${list.length} — refine filters to narrow down</p>`
+        );
       }
-      
-      // Add click handlers
+
       resultsContainer.querySelectorAll('.result-card').forEach(card => {
         card.addEventListener('click', () => {
           const id = card.dataset.id;
@@ -367,35 +600,93 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
         });
       });
     }
-    
-    // Event listeners
-    searchInput?.addEventListener('input', debounce(applyFilters, 300));
-    continentFilter?.addEventListener('change', applyFilters);
-    roboticsFilter?.addEventListener('change', applyFilters);
-    applicationFilter?.addEventListener('change', applyFilters);
-    biomeFilter?.addEventListener('change', applyFilters);
-    
-    clearFiltersBtn?.addEventListener('click', () => {
+
+    function clearAllFilters() {
       if (searchInput) searchInput.value = '';
       if (continentFilter) continentFilter.value = '';
       if (roboticsFilter) roboticsFilter.value = '';
       if (applicationFilter) applicationFilter.value = '';
       if (biomeFilter) biomeFilter.value = '';
       applyFilters();
+    }
+
+    // Event listeners
+    searchInput?.addEventListener('input', debounce(applyFilters, 250));
+    continentFilter?.addEventListener('change', applyFilters);
+    roboticsFilter?.addEventListener('change', () => { syncQuickChips(); applyFilters(); });
+    applicationFilter?.addEventListener('change', applyFilters);
+    biomeFilter?.addEventListener('change', applyFilters);
+
+    searchClear?.addEventListener('click', () => {
+      if (searchInput) searchInput.value = '';
+      applyFilters();
+      searchInput?.focus();
     });
-    
-    // Sidebar toggle for mobile
+
+    clearFiltersBtn?.addEventListener('click', clearAllFilters);
+
+    quickChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const t = chip.dataset.quickType || '';
+        if (roboticsFilter) roboticsFilter.value = t;
+        applyFilters();
+      });
+    });
+
+    // Reset view
+    document.getElementById('reset-view')?.addEventListener('click', () => {
+      if (homeBounds) map.fitBounds(homeBounds, { padding: [50, 50], animate: true });
+    });
+
+    // Legend collapse
+    const legend = document.getElementById('map-legend');
+    document.getElementById('legend-toggle')?.addEventListener('click', () => {
+      legend?.classList.toggle('collapsed');
+      const expanded = !legend?.classList.contains('collapsed');
+      document.getElementById('legend-toggle')?.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    });
+
+    // Sidebar toggle
     const sidebar = document.getElementById('map-sidebar');
-    const sidebarToggle = document.getElementById('sidebar-toggle');
-    
-    sidebarToggle?.addEventListener('click', () => {
+    const container = document.getElementById('climate-map-container');
+    document.getElementById('sidebar-toggle')?.addEventListener('click', () => {
       sidebar?.classList.toggle('collapsed');
+      container?.classList.toggle('sidebar-collapsed');
+      setTimeout(() => map.invalidateSize(), 320);
     });
-    
-    // Initial render
-    renderResultsList(entries);
-    
-    // Debounce helper
+
+    // Keyboard shortcuts: "/" focuses search, "Escape" clears, "Esc" closes popup
+    document.addEventListener('keydown', (ev) => {
+      const target = ev.target;
+      const inField = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT');
+      if (ev.key === '/' && !inField) {
+        ev.preventDefault();
+        searchInput?.focus();
+        searchInput?.select?.();
+      } else if (ev.key === 'Escape') {
+        if (document.activeElement === searchInput && searchInput.value) {
+          searchInput.value = '';
+          applyFilters();
+        } else {
+          map.closePopup();
+        }
+      }
+    });
+
+    // Initial render (will also pick up URL params)
+    applyFilters();
+
+    // Tiny HTML-escape util
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     function debounce(fn, delay) {
       let timeout;
       return function(...args) {
@@ -416,7 +707,7 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
     overflow: hidden;
     background: #f8fafc;
   }
-  
+
   /* Sidebar */
   .map-sidebar {
     position: relative;
@@ -432,43 +723,75 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
     transition: transform 0.3s ease, margin-left 0.3s ease;
     overflow: hidden;
   }
-  
+
   .map-sidebar.collapsed {
     margin-left: -380px;
   }
-  
+
   .sidebar-header {
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem 1rem;
     border-bottom: 1px solid #e5e7eb;
-    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, #0f172a 0%, #1e40af 60%, #16a34a 130%);
     color: white;
+    position: relative;
+    overflow: hidden;
   }
-  
+
+  .sidebar-header::after {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(34, 197, 94, 0.4), transparent 70%);
+    pointer-events: none;
+  }
+
   .sidebar-title {
     font-family: 'Oswald', system-ui, sans-serif;
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    margin: 0 0 0.25rem 0;
+    margin: 0 0 0.875rem 0;
+    position: relative;
   }
-  
-  .sidebar-subtitle {
-    font-size: 0.875rem;
-    opacity: 0.9;
-    margin: 0;
+
+  .sidebar-stats {
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
   }
-  
+  .sidebar-stats .stat {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .sidebar-stats .stat-num {
+    font-family: 'Oswald', system-ui, sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .sidebar-stats .stat-label {
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.75);
+    margin-top: 0.25rem;
+  }
+
   /* Search */
   .sidebar-search {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 0.875rem 1.5rem 0.625rem;
+    border-bottom: 1px solid #f3f4f6;
   }
-  
+
   .search-input-wrapper {
     position: relative;
   }
-  
+
   .search-icon {
     position: absolute;
     left: 12px;
@@ -479,164 +802,304 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
     color: #9ca3af;
     pointer-events: none;
   }
-  
+
   .search-input {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2.75rem;
+    padding: 0.625rem 2.25rem 0.625rem 2.5rem;
     border: 1px solid #e5e7eb;
     border-radius: 8px;
     font-size: 0.9375rem;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
     background: #f9fafb;
   }
-  
+
   .search-input:focus {
     outline: none;
     border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
     background: white;
   }
-  
+
   .search-input::placeholder {
     color: #9ca3af;
   }
-  
+
+  .search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    color: #6b7280;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .search-clear:hover { background: #d1d5db; }
+
+  .search-hint {
+    font-size: 0.6875rem;
+    color: #9ca3af;
+    margin: 0.5rem 0 0 0;
+  }
+  .search-hint kbd {
+    display: inline-block;
+    padding: 0.0625rem 0.3125rem;
+    border: 1px solid #e5e7eb;
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    background: #f9fafb;
+    font-family: ui-monospace, monospace;
+    font-size: 0.6875rem;
+    color: #6b7280;
+  }
+
+  /* Quick filter chips */
+  .quick-filters {
+    padding: 0 1.5rem 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    border-bottom: 1px solid #f3f4f6;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3125rem 0.625rem;
+    background: #f3f4f6;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.15s;
+    line-height: 1.1;
+  }
+
+  .chip:hover {
+    background: #e5e7eb;
+  }
+
+  .chip[data-active="true"] {
+    background: white;
+    border-color: var(--chip-color, #1e40af);
+    color: #111827;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .chip-count {
+    font-variant-numeric: tabular-nums;
+    color: #9ca3af;
+    font-weight: 500;
+    font-size: 0.6875rem;
+  }
+  .chip[data-active="true"] .chip-count { color: #6b7280; }
+
   /* Filters */
   .sidebar-filters {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #e5e7eb;
+    padding: 0.75rem 1.5rem 0.875rem;
+    border-bottom: 1px solid #f3f4f6;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+    gap: 0.625rem;
     overflow: hidden;
   }
-  
+
   .filter-group {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
     min-width: 0;
   }
-  
+
   .filter-group label {
-    font-size: 0.75rem;
-    font-weight: 500;
+    font-size: 0.6875rem;
+    font-weight: 600;
     color: #6b7280;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
   }
-  
+
   .filter-select {
     width: 100%;
     max-width: 100%;
-    padding: 0.5rem 0.75rem;
+    padding: 0.4375rem 0.625rem;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     background: white;
     cursor: pointer;
     transition: border-color 0.2s;
     box-sizing: border-box;
   }
-  
+
   .filter-select:focus {
     outline: none;
     border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
-  
+
   .clear-filters-btn {
     grid-column: 1 / -1;
-    padding: 0.5rem 1rem;
-    background: #f3f4f6;
+    padding: 0.4375rem 1rem;
+    background: #f9fafb;
     border: 1px solid #e5e7eb;
     border-radius: 6px;
     font-size: 0.8125rem;
-    font-weight: 500;
+    font-weight: 600;
     color: #6b7280;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4375rem;
   }
-  
   .clear-filters-btn:hover {
-    background: #e5e7eb;
+    background: #f3f4f6;
     color: #374151;
+    border-color: #d1d5db;
   }
-  
+  .active-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.125rem;
+    height: 1.125rem;
+    padding: 0 0.3125rem;
+    background: #1e40af;
+    color: white;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
   /* Results List */
   .sidebar-results {
     flex: 1;
     overflow-y: auto;
     padding: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
   }
-  
-  .result-card {
+  .sidebar-results::-webkit-scrollbar { width: 6px; }
+  .sidebar-results::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+  /* result cards & empty state are injected via innerHTML, so must be :global */
+  :global(.result-card) {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.625rem 0.75rem;
     background: white;
     border: 1px solid transparent;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s;
     text-align: left;
+    margin-bottom: 0.125rem;
+    font-family: inherit;
   }
-  
-  .result-card:hover {
+
+  :global(.result-card:hover) {
     background: #f8fafc;
     border-color: #e5e7eb;
+    transform: translateX(2px);
   }
-  
-  .result-logo {
+
+  :global(.result-logo) {
     width: 40px;
     height: 40px;
     min-width: 40px;
     border-radius: 8px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--ring, #e5e7eb);
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
     background: white;
+    flex-shrink: 0;
   }
-  
-  .result-logo img {
-    width: 28px;
-    height: 28px;
+
+  :global(.result-logo img) {
+    width: 26px;
+    height: 26px;
     object-fit: contain;
   }
-  
-  .result-logo-fallback {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
+
+  :global(.result-logo .logo-initials) {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
-  
-  .result-info {
+  :global(.result-logo.logo-fallback) {
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+  }
+  :global(.result-logo.logo-fallback span) {
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  :global(.result-info) {
     flex: 1;
     min-width: 0;
   }
-  
-  .result-name {
+
+  :global(.result-name) {
     font-size: 0.9375rem;
     font-weight: 600;
     color: #1f2937;
-    margin: 0 0 0.125rem 0;
+    margin: 0 0 0.1875rem 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  
-  .result-location {
-    font-size: 0.8125rem;
+
+  :global(.result-location) {
+    font-size: 0.75rem;
     color: #6b7280;
     margin: 0 0 0.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
   }
-  
-  .result-tag {
+  :global(.result-type-dot) {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  :global(.result-tag) {
     display: inline-block;
-    padding: 0.125rem 0.5rem;
+    padding: 0.0625rem 0.5rem;
     background: #f3f4f6;
     border-radius: 4px;
     font-size: 0.6875rem;
@@ -644,69 +1107,217 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
     text-transform: uppercase;
     letter-spacing: 0.025em;
   }
-  
-  .no-results {
-    padding: 2rem;
+
+  :global(.empty-state) {
+    padding: 2.5rem 1rem;
     text-align: center;
     color: #9ca3af;
-    font-size: 0.9375rem;
   }
-  
-  .results-overflow {
+  :global(.empty-state svg) { color: #d1d5db; margin: 0 auto 0.75rem; display: block; }
+  :global(.empty-state p) { margin: 0 0 1rem; font-size: 0.875rem; }
+  :global(.empty-clear) {
+    padding: 0.4375rem 1rem;
+    background: #1e40af;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  :global(.empty-clear:hover) { background: #1e3a8a; }
+
+  :global(.results-overflow) {
     padding: 0.75rem;
     text-align: center;
     color: #9ca3af;
-    font-size: 0.8125rem;
-    border-top: 1px solid #e5e7eb;
+    font-size: 0.75rem;
+    border-top: 1px solid #f3f4f6;
     margin-top: 0.5rem;
   }
-  
+
   /* Sidebar Toggle */
   .sidebar-toggle {
     position: absolute;
-    right: -44px;
+    right: -40px;
     top: 50%;
     transform: translateY(-50%);
-    width: 44px;
-    height: 80px;
+    width: 40px;
+    height: 64px;
     background: white;
     border: none;
     border-radius: 0 8px 8px 0;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.08);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background 0.2s;
+    z-index: 1001;
   }
-  
-  .sidebar-toggle:hover {
-    background: #f8fafc;
-  }
-  
+
+  .sidebar-toggle:hover { background: #f8fafc; }
+
   .toggle-icon {
-    width: 24px;
-    height: 24px;
-    color: #6b7280;
+    width: 22px;
+    height: 22px;
+    color: #4b5563;
     transition: transform 0.3s;
   }
-  
-  .map-sidebar.collapsed .toggle-icon {
-    transform: rotate(180deg);
-  }
-  
+
+  .map-sidebar.collapsed .toggle-icon { transform: rotate(180deg); }
+
   /* Map */
   .map-wrapper {
     flex: 1;
     position: relative;
     overflow: hidden;
   }
-  
+
   .leaflet-map {
     width: 100%;
     height: 100%;
   }
-  
+
+  /* Map style toggle (top-left) */
+  .map-style-toggle {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1000;
+    display: flex;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  .style-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3125rem;
+    padding: 0.4375rem 0.6875rem;
+    background: transparent;
+    border: none;
+    border-right: 1px solid #f3f4f6;
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .style-btn:last-child { border-right: none; }
+  .style-btn:hover { background: #f9fafb; color: #1f2937; }
+  .style-btn[data-active="true"] {
+    background: #1e40af;
+    color: white;
+  }
+
+  /* Reset view button (top-right under zoom controls) */
+  .reset-view-btn {
+    position: absolute;
+    top: 92px;
+    right: 12px;
+    z-index: 1000;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.4375rem 0.6875rem;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    color: #4b5563;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reset-view-btn:hover {
+    background: white;
+    color: #1e40af;
+  }
+
+  /* Legend (bottom-left) */
+  .map-legend {
+    position: absolute;
+    bottom: 24px;
+    left: 12px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(8px);
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    min-width: 180px;
+    max-width: 220px;
+    overflow: hidden;
+  }
+  .legend-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 0.75rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #1f2937;
+  }
+  .legend-toggle:hover { background: #f9fafb; }
+  .legend-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #4b5563;
+  }
+  .legend-toggle svg { transition: transform 0.25s; color: #6b7280; }
+  .map-legend.collapsed .legend-toggle svg { transform: rotate(-90deg); }
+  .legend-body {
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem 0.75rem 0.625rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem;
+    border-top: 1px solid #f3f4f6;
+    transition: max-height 0.25s ease, opacity 0.2s, padding 0.25s;
+    max-height: 320px;
+    overflow: hidden;
+  }
+  .map-legend.collapsed .legend-body {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-color: transparent;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4375rem;
+    font-size: 0.75rem;
+    color: #374151;
+  }
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+  }
+  .legend-count {
+    margin-left: auto;
+    color: #9ca3af;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    font-size: 0.6875rem;
+  }
+
   .map-brand {
     position: absolute;
     bottom: 24px;
@@ -716,68 +1327,94 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
     background: rgba(255, 255, 255, 0.95);
     border-radius: 4px;
     font-family: 'Oswald', system-ui, sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: #1e40af;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   }
-  
+
+  /* Dark map style — adjust overlay UI for readability */
+  .climate-map-container[data-map-style="dark"] .map-brand,
+  .climate-map-container[data-map-style="satellite"] .map-brand {
+    background: rgba(15, 23, 42, 0.9);
+    color: #93c5fd;
+  }
+
   /* Custom Markers */
   :global(.custom-marker) {
     background: transparent !important;
     border: none !important;
   }
-  
+
   :global(.logo-marker) {
     width: 36px;
     height: 36px;
-    border-radius: 8px;
-    border: 2px solid #3b82f6;
+    border-radius: 50%;
+    border: 2.5px solid var(--ring, #3b82f6);
     background: white;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18), 0 0 0 3px rgba(255, 255, 255, 0.6);
     overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s;
   }
-  
+
   :global(.logo-marker:hover) {
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: scale(1.15);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22), 0 0 0 3px rgba(255, 255, 255, 0.8);
+    z-index: 999;
   }
-  
+
   :global(.logo-marker img) {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
     object-fit: contain;
   }
-  
+
   :global(.logo-marker.fallback) {
-    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    background: var(--ring, linear-gradient(135deg, #3b82f6, #1e40af));
+    color: white;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
   }
-  
+
   :global(.dot-marker) {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    border: 2px solid white;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    margin: 11px;
+    border: 2.5px solid white;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+    margin: 10px;
     transition: transform 0.2s;
   }
-  
-  :global(.dot-marker:hover) {
-    transform: scale(1.3);
+
+  :global(.dot-marker:hover) { transform: scale(1.4); }
+
+  /* Hover tooltip */
+  :global(.marker-hover-tooltip.leaflet-tooltip) {
+    background: rgba(15, 23, 42, 0.95);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-family: 'Source Sans 3', system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
   }
-  
+  :global(.marker-hover-tooltip.leaflet-tooltip-top:before) {
+    border-top-color: rgba(15, 23, 42, 0.95);
+  }
+
   /* Cluster Markers */
   :global(.marker-cluster-custom) {
     background: transparent !important;
   }
-  
+
   :global(.cluster-marker) {
     width: 40px;
     height: 40px;
@@ -788,137 +1425,173 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
     align-items: center;
     justify-content: center;
     font-family: 'Source Sans 3', system-ui, sans-serif;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.875rem;
-    box-shadow: 0 3px 12px rgba(30, 64, 175, 0.4);
-    border: 3px solid white;
+    box-shadow: 0 3px 12px rgba(30, 64, 175, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.85);
+    border: none;
     transition: transform 0.2s;
   }
-  
+
   :global(.cluster-marker:hover) {
-    transform: scale(1.1);
+    transform: scale(1.12);
   }
-  
+
   :global(.cluster-medium) {
     width: 48px;
     height: 48px;
     font-size: 1rem;
+    background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+    box-shadow: 0 3px 12px rgba(22, 163, 74, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.85);
   }
-  
+
   :global(.cluster-large) {
     width: 56px;
     height: 56px;
     font-size: 1.125rem;
+    background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.5), 0 0 0 5px rgba(255, 255, 255, 0.85);
   }
-  
+
   /* Custom Popup */
   :global(.custom-popup .leaflet-popup-content-wrapper) {
     border-radius: 12px;
     padding: 0;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
   }
-  
+
   :global(.custom-popup .leaflet-popup-content) {
     margin: 0;
     width: auto !important;
   }
-  
+
   :global(.custom-popup .leaflet-popup-tip) {
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   :global(.map-popup) {
-    padding: 1rem;
+    padding: 1rem 1rem 0.875rem;
     min-width: 260px;
-    max-width: 320px;
+    max-width: 340px;
+    font-family: 'Source Sans 3', system-ui, sans-serif;
   }
-  
+
   :global(.popup-header) {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.625rem;
   }
-  
+  :global(.popup-header-text) { min-width: 0; flex: 1; }
+
   :global(.popup-logo) {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 8px;
     object-fit: contain;
     background: #f9fafb;
     border: 1px solid #e5e7eb;
+    padding: 4px;
+    flex-shrink: 0;
   }
-  
+
   :global(.popup-title) {
     font-family: 'Oswald', system-ui, sans-serif;
     font-size: 1.125rem;
     font-weight: 600;
-    color: #1f2937;
+    color: #0f172a;
     margin: 0;
     line-height: 1.2;
+    overflow-wrap: break-word;
   }
-  
+
   :global(.popup-location) {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     color: #6b7280;
     margin: 0.125rem 0 0 0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
   }
-  
+
   :global(.popup-description) {
     font-size: 0.875rem;
-    color: #4b5563;
+    color: #374151;
     line-height: 1.5;
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 0.625rem 0;
   }
-  
+
+  :global(.popup-meta) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    color: #4b5563;
+    padding: 0.5rem 0.625rem;
+    background: #f9fafb;
+    border-radius: 6px;
+    margin-bottom: 0.625rem;
+  }
+  :global(.popup-meta strong) {
+    color: #6b7280;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.6875rem;
+    margin-right: 0.25rem;
+  }
+
   :global(.popup-tags) {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.375rem;
-    margin-bottom: 0.75rem;
+    gap: 0.3125rem;
+    margin-bottom: 0.625rem;
   }
-  
+
   :global(.popup-tag) {
     display: inline-block;
-    padding: 0.25rem 0.5rem;
+    padding: 0.1875rem 0.4375rem;
     background: #f3f4f6;
     border-radius: 4px;
     font-size: 0.6875rem;
-    color: #6b7280;
+    color: #4b5563;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.025em;
+    border: 1px solid transparent;
   }
-  
+  :global(.popup-tag-type) {
+    /* color/bg set inline */
+  }
+
   :global(.popup-actions) {
     display: flex;
-    gap: 0.75rem;
-    padding-top: 0.75rem;
-    border-top: 1px solid #e5e7eb;
+    gap: 0.875rem;
+    padding-top: 0.625rem;
+    border-top: 1px solid #f3f4f6;
+    align-items: center;
   }
-  
+
   :global(.popup-link) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
     font-size: 0.8125rem;
-    font-weight: 600;
+    font-weight: 700;
     color: #1e40af;
     text-decoration: none;
     transition: color 0.2s;
   }
-  
-  :global(.popup-link:hover) {
-    color: #3b82f6;
-  }
-  
+  :global(.popup-link:hover) { color: #3b82f6; }
+
   :global(.popup-linkedin) {
     font-size: 0.8125rem;
+    font-weight: 600;
     color: #6b7280;
     text-decoration: none;
     transition: color 0.2s;
   }
-  
-  :global(.popup-linkedin:hover) {
-    color: #0077b5;
-  }
-  
+  :global(.popup-linkedin:hover) { color: #0077b5; }
+
   /* Mobile Responsive */
   @media (max-width: 768px) {
     .map-sidebar {
@@ -929,18 +1602,32 @@ const biomes = [...new Set(entries.map(e => e.biomeType).filter(Boolean))].sort(
       max-width: 340px;
       height: 100%;
     }
-    
+
     .map-sidebar.collapsed {
       margin-left: -340px;
     }
-    
+
     .sidebar-toggle {
-      right: -40px;
+      right: -36px;
     }
-    
+
     .sidebar-filters {
       grid-template-columns: 1fr;
     }
+
+    .map-style-toggle {
+      top: 8px;
+      left: 8px;
+    }
+    .reset-view-btn {
+      top: 88px;
+      right: 8px;
+    }
+    .map-legend {
+      bottom: 12px;
+      left: 8px;
+      max-width: 180px;
+    }
+    .map-brand { display: none; }
   }
 </style>
-

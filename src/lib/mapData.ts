@@ -242,9 +242,9 @@ function transformRow(row: Record<string, string>, index: number): ClimateRoboti
     .map(c => c.trim())
     .filter(Boolean);
   
-  // The second "Robotics" column is the robotics type (Aerial Robot, Ground Robot, etc.)
-  // After parseCSV, duplicate headers become "Robotics" and "Robotics_1"
-  const roboticsType = row['Robotics_1'] || 'Other';
+  // The "Robotics Type" column carries the type (Aerial Robot, Ground Robot, etc.)
+  // (older versions of the sheet used a duplicate "Robotics" header — kept as fallback.)
+  const roboticsType = row['Robotics Type'] || row['Robotics_1'] || 'Other';
   
   return {
     id: `entry-${index}`,
