@@ -715,7 +715,7 @@ export const SPEAKERS_2026: Speaker[] = [
   },
   {
     id: 'stefano-minchev',
-    name: 'Stefano Minchev',
+    name: 'Stefano Mintchev',
     title: 'Day 3 Opening',
     organization: 'Climate Robotics Network',
     photoUrl: '/images/speakers/stefano-minchev.jpg',
@@ -1257,7 +1257,7 @@ export const SUMMIT_2026_PROGRAM: ProgramDay[] = [
         id: 's26-3-1',
         title: 'Day 3 Opening Remarks',
         time: '13:00 - 13:05 UTC',
-        description: 'Stefano Minchev.',
+        description: 'Stefano Mintchev.',
         type: 'keynote',
         videos: [],
       },
