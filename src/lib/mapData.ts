@@ -4,8 +4,16 @@
 
 import type { ClimateRoboticsEntry } from './types';
 import geocodeCacheRaw from './geocode-cache.json' with { type: 'json' };
+import geocodeOverridesRaw from './geocode-overrides.json' with { type: 'json' };
 
 const geocodeCache = geocodeCacheRaw as Record<string, [number, number]>;
+// Hand-curated overrides take precedence over the auto-geocode cache.
+// Strip the _comment key (only present for documentation).
+const geocodeOverrides: Record<string, [number, number]> = Object.fromEntries(
+  Object.entries(geocodeOverridesRaw as Record<string, unknown>).filter(
+    ([k, v]) => k !== '_comment' && Array.isArray(v),
+  ) as Array<[string, [number, number]]>,
+);
 
 // Google Sheets public CSV export URL
 const SPREADSHEET_ID = '1rFJPB4g8d21JJkzxu9Ro668cL5H66HUIQCD0pNWwO74';
@@ -212,8 +220,14 @@ export function geocodeKey(name: string, country: string): string {
  * fall back to country centroid. Returns null if neither is available.
  */
 function getOrgCoordinates(name: string, country: string): { coords: [number, number]; source: 'city' | 'country' } | null {
-  const cityCoords = geocodeCache[geocodeKey(name, country)];
+  const key = geocodeKey(name, country);
+  // 1. Hand-curated override (highest confidence)
+  const override = geocodeOverrides[key];
+  if (override) return { coords: override, source: 'city' };
+  // 2. Auto-geocoded city coordinates
+  const cityCoords = geocodeCache[key];
   if (cityCoords) return { coords: cityCoords, source: 'city' };
+  // 3. Country centroid (low confidence, will be visually jittered client-side)
   const countryCoords = getCountryCoordinates(country);
   if (countryCoords) return { coords: countryCoords, source: 'country' };
   return null;

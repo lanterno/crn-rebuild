@@ -1,6 +1,6 @@
 ---
 /**
- * Interactive Leaflet map component for Climate Robotics organizations
+ * Interactive Leaflet map component for Climate Robotics startups
  */
 import type { ClimateRoboticsEntry } from '@/lib/types';
 import { ROBOTICS_TYPE_COLORS } from '@/lib/types';
@@ -58,7 +58,7 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
       <div class="sidebar-stats">
         <div class="stat">
           <span class="stat-num" id="entry-count">{entries.length}</span>
-          <span class="stat-label">orgs</span>
+          <span class="stat-label">startups</span>
         </div>
         <div class="stat">
           <span class="stat-num" id="country-count">{uniqueCountries}</span>
@@ -73,11 +73,11 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
         href={SHEET_URL}
         target="_blank"
         rel="noopener"
-        class="add-org-cta"
+        class="add-startup-cta"
         title="Open the public Climate Robotics spreadsheet to add or edit entries"
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
-        Add your org
+        Add your startup
       </a>
     </div>
 
@@ -93,7 +93,7 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
           id="map-search"
           placeholder="Search name, country, application…"
           class="search-input"
-          aria-label="Search organizations"
+          aria-label="Search startups"
         />
         <button id="search-clear" class="search-clear" type="button" aria-label="Clear search" hidden>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14">
@@ -623,10 +623,9 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
       renderResultsList(visibleEntries);
     }
 
-    // Deep-link: open a specific org's popup when ?org=<id> is in the URL.
+    // Deep-link: open a specific startup's popup when ?startup=<id> is in the URL.
     // Also keep the URL in sync as the user opens/closes popups so it's shareable.
-    let openOrgId = '';
-    function openOrg(id, options) {
+    function openStartup(id, options) {
       const data = markerMap.get(id);
       if (!data) return false;
       const { marker, entry } = data;
@@ -643,11 +642,10 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
       return true;
     }
 
-    function setOrgInUrl(id) {
-      openOrgId = id || '';
+    function setStartupInUrl(id) {
       const p = new URLSearchParams(window.location.search);
-      if (id) p.set('org', id);
-      else p.delete('org');
+      if (id) p.set('startup', id);
+      else p.delete('startup');
       const qs = p.toString();
       window.history.replaceState(null, '', window.location.pathname + (qs ? `?${qs}` : '') + window.location.hash);
     }
@@ -656,12 +654,12 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
       // Find the marker whose popup just opened and write its id to the URL
       for (const [id, { marker }] of markerMap.entries()) {
         if (marker.getPopup && marker.getPopup() === e.popup) {
-          setOrgInUrl(id);
+          setStartupInUrl(id);
           break;
         }
       }
     });
-    map.on('popupclose', () => setOrgInUrl(''));
+    map.on('popupclose', () => setStartupInUrl(''));
 
     function renderResultsList(list) {
       if (!resultsContainer) return;
@@ -670,7 +668,7 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
         resultsContainer.innerHTML = `
           <div class="empty-state">
             <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            <p>No organizations match these filters.</p>
+            <p>No startups match these filters.</p>
             <button class="empty-clear" type="button">Clear filters</button>
           </div>
         `;
@@ -718,7 +716,7 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
       resultsContainer.querySelectorAll('.result-card').forEach(card => {
         card.addEventListener('click', () => {
           const id = card.dataset.id;
-          if (id) openOrg(id);
+          if (id) openStartup(id);
         });
       });
     }
@@ -814,10 +812,12 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
     // Initial render (picks up URL params for filters)
     applyFilters();
 
-    // If the URL has ?org=<id>, open that org's popup after layout settles
-    const orgParam = params.get('org');
-    if (orgParam) {
-      setTimeout(() => openOrg(orgParam, { animate: false }), 250);
+    // If the URL has ?startup=<id>, open that startup's popup after layout settles.
+    // We also accept the legacy ?org=<id> param for back-compat with the first
+    // shipped version of this page.
+    const startupParam = params.get('startup') || params.get('org');
+    if (startupParam) {
+      setTimeout(() => openStartup(startupParam, { animate: false }), 250);
     }
 
     // Tiny HTML-escape util
@@ -926,7 +926,7 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
     margin-top: 0.25rem;
   }
 
-  .add-org-cta {
+  .add-startup-cta {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -944,7 +944,7 @@ const SHEET_URL = LINKS.map.googleSpreadsheet;
     text-decoration: none;
     transition: all 0.15s;
   }
-  .add-org-cta:hover {
+  .add-startup-cta:hover {
     background: rgba(255, 255, 255, 0.25);
     border-color: rgba(255, 255, 255, 0.55);
   }
