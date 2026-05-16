@@ -1,0 +1,181 @@
+A G E N D A
+C L I M A T E  
+R O B O T I C S  S U M M I T  
+2026
+APRIL 21-23, 2026
+THE CLIMATE ROBOTICS NETWORK
+PRESENTS
+--- PAGE BREAK ---
+T H E  C L I M A T E  R O B O T I C S
+N E T W O R K
+1
+Tuesday, April 21 
+CLIMATE ROBOTICS SUMMIT 2026
+U S
+E a s t e r n  t i m e
+C e n t r a l
+E u r o p e a n  T i m e
+KEYNOTE TALK
+Anna Lerner Nesbitt
+Anna Lerner serves as the CEO of the Climate Collective, a leading coalition of
+stakeholders–from investors and non-profit organizations to entrepreneurs and
+scientists–leveraging trusted, sustainable web3 infrastructure to unlock innovative
+and verifiable climate action at scale. She brings 16 years of international
+experience working at the intersection of international development and
+technology/private sector across 4 continents (Europe, Africa, South America,
+North America). An economist by training, Anna thrives in the intersection of new
+ideas, global challenges, and digital technologies.
+09:20 15:20
+W E L C O M E  -  O P E N I N G  R E M A R K S
+P a t r i c k  M e i e r ,  D i r e c t o r  o f  S u s t a i n a b l e  V e n t u r e s
+B e r k  Ç a l l ı ,  W o r c e s t e r  P o l y t e c h n i c  I n s t i t u t e
+0 9 : 0 0 1 5 : 0 0
+W E L C O M E  F R O M  O U R  G O L D  S P O N S O R
+J e s i c a  C h a v e z ,  R o b o S u c c e s s
+0 9 : 1 0 1 5 : 1 0
+SESSION 1: BIODIVERSITY AND ROBOTICS
+Raphael Zufferey, Ulrik Pagh Schultz Lundquist, Davide Di Blasi,Annette Govindarajan, Jürg Germann
+Raphael Zufferey is a Professor at Massachusetts Institute of Technologyspecializing in aerial robotics for environmental monitoring, with a focus on usingautonomous drones to support biodiversity assessment and conservation efforts.
+Ulrik Pagh Schultz Lundquist is a Professor at University of Southern Denmarkand leader in drone technology, working on autonomous robotic systems forenvironmental monitoring and applications in biodiversity and ecosystemmanagement.
+Davide Di Blasi is an Antarctic explorer and researcher affiliated with IstitutoItaliano di Tecnologia, with extensive field experience studying the life cycle oftoothfish and leveraging robotic technologies to support biodiversity research inextreme environments.
+10:00 16:00
+--- PAGE BREAK ---
+U S
+E a s t e r n  t i m e
+C e n t r a l
+E u r o p e a n  T i m e
+T H E  C L I M A T E  R O B O T I C S
+N E T W O R K
+2
+CLIMATE ROBOTICS SUMMIT 2026
+SESSION 2: START-UP PITCHES
+Amy Ma,  CEO of Danu Robotics
+Annie Aixa Rosas Hernández, Co-founder and Director of Bluekali
+11:00 17:00
+SESSION 3: ENERGY INFRASTRUCTURE
+Alan Papalia, Charles Dawson, Dave Lane, Yvan Petillot.
+Alan Papalia is an Assistant Professor at the University of Michigan whoseresearch focuses on marine robotics, robot navigation, and environmentalmonitoring. He is the lead author of the "Roadmap for Climate-RelevantRobotics."
+Charles Dawson works with Emerald AI on the controls and optimization layer toenable power flexibility for data centers. Previously, Charles worked at theMassachusetts Department of Energy Resources on load management, gridplanning, and clean energy policy.
+Dave Lane is a Professor Emeritus at Heriot-Watt University, CEO of SeaByte,and a pioneer in marine robotics, with extensive work on autonomy, sonar, andsubsea systems for offshore inspection, intervention, and energy applications.What matters most to him is the prospect of trusted autonomy becoming part ofthe fabric of real-world infrastructure: : making complex systems safer, moreresilient and more productive, improving stewardship of resources, and openingnew possibilities for hazardous work, care and wider public value.
+Yvan Petillot is a Professor of Robotics and Autonomous Systems at Heriot-WattUniversity. He is interested in developing robotics solutions in the marine sector,supporting his long-term vision of robot teams operating in hazardousenvironments, supported by remote human operators. Over the last 20 years, hehas made major contributions to robot perception, navigation and planning inthe underwater domain. 
+11:45 17:45
+Tuesday, April 21
+Short Break10:45 16:45 15 minutes
+Annette Govindarajan is a scientist at Woods Hole Oceanographic Institution,specializing in marine biodiversity and genomics, and leveraging advancedsensing and robotic platforms to study ocean ecosystems and their response toenvironmental change.
+Jürg Germann is Co-Founder and CEO of Inverto Earth, where he leads thedevelopment of robotic and data-driven solutions for environmental monitoring,supporting biodiversity conservation and ecosystem management at scale.
+--- PAGE BREAK ---
+U S
+E a s t e r n  t i m e
+C e n t r a l
+E u r o p e a n  T i m e
+T H E  C L I M A T E  R O B O T I C S
+N E T W O R K
+3
+CLIMATE ROBOTICS SUMMIT 2026
+SUMMARY OF DAY 2 - OPENING REMARKS
+Alan Papalia, University of Michigan
+09:00 15:00
+Cathy Wu, MIT
+Cathy Wu is the Gilbert W. Winslow Career Development Assistant Professor of
+civil and environmental engineering at MIT. Her group studies machine learning
+for control and optimization for sustainable mobility. She is the founder and
+Chair of the Interdisciplinary Research Initiative at the ACM Future of Computing
+Academy and is a recipient of the NSF Career Award aimed at advancing
+learning for generalization in large-scale cyber-physical systems.
+09:05 15:05 KEYNOTE TALK
+SESSION 4: 
+EARTH AND OCEAN OBSERVATIONS
+Matthew Palmer, Enrico Ajanic, Michal Adamkiewicz, MaarjaKruusmaa, Weifen Zhang
+Matthew Palmer is Joint Director of the UK National Climate Science Partnershipat the Met Office, where his work on ocean warming, sea-level change, andclimate projections supports large-scale Earth and ocean observation.
+Enrico Ajanic is an R&D engineer at Meteomatics, developing drone-basedatmospheric sensing systems that enhance weather and Earth observationcapabilities.
+Michal Adamkiewicz is an R&D engineer at WindBorne Systems, contributing tolong-duration balloon platforms and meteorological sensing technologies forglobal atmospheric observation.
+Maarja Kruusmaa is a Professor at TalTech and head of the Centre forBiorobotics, leading research in underwater robotics, underwater sensing, andenvironmental monitoring systems.
+Weifeng "Gordon" Zhang is a Senior Scientist at Woods Hole OceanographicInstitution whose work integrates ocean observation, modeling, and autonomoussystems to study ocean circulation and marine ecosystem dynamics.
+09:50 15:50
+Short Break10:35 16:35 15 minutes
+Wednesday, April 22
+--- PAGE BREAK ---
+U S
+E a s t e r n  t i m e
+C e n t r a l
+E u r o p e a n  T i m e
+T H E  C L I M A T E  R O B O T I C S
+N E T W O R K
+4
+CLIMATE ROBOTICS SUMMIT 2026
+10:50 16:50 SESSION 5:  FUNDING CLIMATE ROBOTICS
+Benjamin Maitland-Lewis, Edgar Ke, Fady Saad, Andy Gollach
+Benjamin Maitland-Lewis is Director of Startup Banking & Founder Success atSilicon Valley Bank, where he works closely with early-stage founders onfundraising, growth, and commercialization strategies relevant to emergingclimate robotics ventures.
+Edgar Ke is a climate deeptech venture builder and investor at Marble, with aparticular interest in batteries and robotics, supporting founders working onhard-tech solutions for climate impact.
+Fady Saad is General Partner at Cybernetix Ventures and Co-founder ofMassRobotics, bringing extensive experience in robotics venture investing, startupfundraising, and scaling innovation ecosystems.
+Andy Gollach is a Partner at SOSV and HAX, where he supports hard-techfounders building companies in areas such as energy, heavy industry, andclimate technology, with experience spanning both investment and industrialoperations.
+SESSION 6: RECYCLING MANAGEMENT AND ROBOTICS
+Manuel G. Catalano, Alireza Rastegarpanah, Anwar Al Assadi, Alan Winfield, Helen McGloin
+Manuel G. Catalano is Principal Investigator of the NuBots research unit at theItalian Institute of Technology, focused on Physical AI Technologies for Human-Robot Co-Evolution, with a sustainability focus on developing flexible roboticsolutions for the recycling of soft materials.
+Alireza Rastegarpanah is Co-Founder of the Extreme Robotics Lab at theUniversity of Birmingham and the National Sustainable Robotics Centre in theUK, with a specialization in robotic EV battery recycling.
+Anwar Al Assadi is a group leader at the Fraunhofer Institute for ManufacturingEngineering and Automation in Germany, focused on automated solutions for EVbattery recycling.
+Alan Winfield is a Professor of Robot Ethics at the University of the West ofEngland and Honorary Professor at the University of York, with a focus on thesustainable use of robotics.
+Helen McGloin is a PhD researcher at the Bristol Robotics Laboratory whosedoctoral research focuses on environmental sustainability in the roboticsindustry, including e-waste, routes to reuse and repurposing, and barriers toimplementing circular economy principles in industrial and consumer robotics.
+11:35 17:35
+Wednesday, April 22
+--- PAGE BREAK ---
+U S
+E a s t e r n  t i m e
+C e n t r a l
+E u r o p e a n  T i m e
+T H E  C L I M A T E  R O B O T I C S
+N E T W O R K
+5
+Thursday, April 23
+CLIMATE ROBOTICS SUMMIT 2026
+SUMMARY OF DAY 3 - OPENING REMARKS
+Stefano Minchev
+09:00 15:00
+Thomas Walla
+Dr. Thomas Walla is Team Lead of Limelight Rainforest, the nonprofit team that
+won the Grand Prize in the 2024 XPRIZE Rainforest Competition, where he led a
+multidisciplinary team in developing transformative technologies for biodiversity
+sampling in tropical forests. He is a Professor of Biology at Colorado Mesa
+University, with a long-standing background in tropical ecology, biodiversity
+monitoring, and insect–plant interactions, shaped by extensive field research in
+the Amazon and Andes. His current work focuses on advancing ecological
+research and conservation through innovative tools for species identification.
+09:05 15:05 KEYNOTE TALK
+SESSION 7: 
+BUILT ENVIRONMENT AND EFFICIENCY VIA ROBOTICS
+Mirko Kovac, Norhan Bayomi; John Fernandez, Ramon Weber,Stefana Parascho, Dylan Crow.
+Mirko Kovac is a Professor at EPFL in Sustainability Robotics, developing aerialrobotic systems for inspection, sensing, and intervention in challenging built andinfrastructure environments.
+Norhan Bayomi is Co-founder and COO of Lamarr.AI and a postdoctoral fellowat MIT, where she combines AI, design, and technology to tackle challenges in thebuilt environment.
+Ramon Weber is an Assistant Professor at UC Berkeley whose work oncomputational design, sustainability, and automation supports the developmentof low-carbon and more efficient buildings.
+Stefana Parascho is a Professor at EPFL whose research explores digitalproduction methods and robot-assisted construction processes for moresustainable building practices.
+Dylan Crow is CEO and co-founder of Renovate Robotics, leading thedevelopment of robotic systems for roofing and solar installation in buildingretrofit and maintenance.
+09:50 15:50
+Short Break10:35 16:35 15 minutes
+--- PAGE BREAK ---
+U S
+E a s t e r n  t i m e
+C e n t r a l
+E u r o p e a n  T i m e
+T H E  C L I M A T E  R O B O T I C S
+N E T W O R K
+6
+Thursday, April 23 
+CLIMATE ROBOTICS SUMMIT 2026
+10:50 16:50 SESSION 8: RESEARCH PITCHES
+Kaushik Jayaram, Imperial College London
+Enrica Zereik, National Research Council of Italy (CNR)
+Kevin Andrew Holdcroft, Swiss Federal Technology Institute of Lausanne (EPFL)
+Galen Brown, Worcester Polytechnic Institute, (WPI)
+SESSION 9: WATER ACCESS AND CONSERVATION VIA ROBOTICS
+Simona Aracri, André Farinha, Adrien Desjardins, Guillaume Féry
+Simona Aracri is a researcher at the National Research Council of Italy (CNR)working on marine robotics and autonomous surface vehicles for environmentalmonitoring, with relevance to water resilience and conservation.
+André Farinha is a researcher at the Commonwealth Scientific and IndustrialResearch Organisation (CSIRO) in Australia, an unmanned aircraft designer androbotics developer with strong experience from concept to field trials, includingUAV deployments for extreme environments.
+Adrien Desjardins is a Professor at UBC whose work focuses on imaging andsensing modalities and autonomous robotics, with marine and biomedicalapplications relevant to aquatic conservation.
+Guillaume Féry is a specialist in climate adaptation and the resilience of water-sector infrastructure, with extensive experience in water utilities, digitalinnovation, and emerging technologies within leading innovation ecosystems.
+11:35 17:35
+CLOSING REMARKS
+Berk Çallı, Worcester Polytechnic Institute
+12:20 18:20
+--- PAGE BREAK ---
+W e  c r e a t e  t o d a y  t h e  r o b o t i c s
+ T H A T  W I L L  C H A N G E  T O M O R R O W

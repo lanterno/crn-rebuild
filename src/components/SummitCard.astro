@@ -18,8 +18,8 @@ const statusColors = {
 };
 
 const cardClass = featured
-  ? 'group relative overflow-hidden rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1'
-  : 'group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1';
+  ? 'group relative overflow-hidden rounded-2xl shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 h-full flex flex-col'
+  : 'group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 h-full flex flex-col';
 ---
 
 <a href={`/summits/${summit.year}`} class={cardClass}>
@@ -31,7 +31,7 @@ const cardClass = featured
   <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
   
   {/* Content */}
-  <div class={`relative ${featured ? 'p-8 md:p-12' : 'p-6'}`}>
+  <div class={`relative flex flex-col flex-1 ${featured ? 'p-8 md:p-12' : 'p-6'}`}>
     {/* Status Badge */}
     <span class={`inline-block px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full ${statusColors[summit.status]} mb-4`}>
       {summit.status === 'upcoming' ? 'Upcoming' : 'Watch Recordings'}
@@ -82,7 +82,7 @@ const cardClass = featured
     )}
     
     {/* CTA */}
-    <div class="flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform">
+    <div class="flex items-center text-white font-semibold group-hover:translate-x-2 transition-transform mt-auto">
       {summit.status === 'upcoming' ? 'Learn More' : 'Watch Now'}
       <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

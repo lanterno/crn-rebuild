@@ -32,13 +32,13 @@ const tierLabels = {
 const tierSizes = {
   organizing: 'h-16 md:h-20',
   platinum: 'h-20 md:h-24',
-  gold: 'h-14 md:h-18',
+  gold: 'h-14 md:h-16',
   silver: 'h-12 md:h-14',
   partner: 'h-10 md:h-12',
 };
 
 const tierGridCols = {
-  organizing: 'grid-cols-2 md:grid-cols-3 lg:grid-cols-5',
+  organizing: 'grid-cols-2 md:grid-cols-3',
   platinum: 'grid-cols-1 md:grid-cols-2',
   gold: 'grid-cols-2 md:grid-cols-3',
   silver: 'grid-cols-2 md:grid-cols-4',
@@ -66,12 +66,23 @@ const tierGridCols = {
               title={sponsor.name}
             >
               {sponsor.logoUrl ? (
-                <img
-                  src={sponsor.logoUrl}
-                  alt={sponsor.name}
-                  class={`${tierSizes[tier as keyof typeof tierSizes]} w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300`}
-                  loading="lazy"
-                />
+                <>
+                  <img
+                    src={sponsor.logoUrl}
+                    alt={sponsor.name}
+                    class={`sponsor-logo ${tierSizes[tier as keyof typeof tierSizes]} w-auto object-contain grayscale group-hover:grayscale-0 transition-all duration-300`}
+                    loading="lazy"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                  />
+                  <div
+                    class={`${tierSizes[tier as keyof typeof tierSizes]} items-center justify-center px-4`}
+                    style="display:none"
+                  >
+                    <span class="text-gray-600 font-heading font-semibold text-center group-hover:text-crn-blue transition-colors">
+                      {sponsor.name}
+                    </span>
+                  </div>
+                </>
               ) : (
                 <div class={`${tierSizes[tier as keyof typeof tierSizes]} flex items-center justify-center px-4`}>
                   <span class="text-gray-600 font-heading font-semibold text-center group-hover:text-crn-blue transition-colors">

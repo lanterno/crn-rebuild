@@ -110,7 +110,7 @@ const tabs = [
   </section>
   
   {/* Tab Navigation */}
-  <div class="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+  <div class="sticky top-[72px] z-40 bg-white border-b border-gray-200 shadow-sm">
     <div class="container mx-auto px-4">
       <nav class="flex gap-1 overflow-x-auto scrollbar-hide py-2" aria-label="Summit sections">
         {tabs.map((tab, idx) => (
@@ -185,9 +185,9 @@ const tabs = [
         
         {/* Become a Sponsor CTA */}
         <div class="text-center mt-16">
-          <p class="text-gray-600 mb-4">Interested in sponsoring the next summit?</p>
-          <a href="/summits/2026" class="inline-flex items-center gap-2 px-6 py-3 bg-crn-blue text-white font-semibold uppercase tracking-wider hover:bg-crn-blue-dark transition-colors rounded-lg">
-            View 2026 Sponsorship Options
+          <p class="text-gray-600 mb-4">Interested in sponsoring a future summit?</p>
+          <a href="/slack" class="inline-flex items-center gap-2 px-6 py-3 bg-crn-blue text-white font-semibold uppercase tracking-wider hover:bg-crn-blue-dark transition-colors rounded-lg">
+            Get in Touch via Slack
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
@@ -259,12 +259,12 @@ const tabs = [
   <section class="py-16 bg-crn-blue">
     <div class="container mx-auto px-4 text-center">
       <h2 class="text-2xl md:text-3xl font-heading font-bold text-white mb-4">
-        Don't Miss the Next Summit!
+        Explore Summit 2026
       </h2>
       <p class="text-white/80 mb-8 max-w-xl mx-auto">
-        Climate Robotics Summit 2026 is coming. Be the first to know when registration opens.
+        Our 2026 summit wrapped on April 23. View the program, speakers, and sponsors.
       </p>
-      <a 
+      <a
         href="/summits/2026"
         class="inline-flex items-center gap-2 px-8 py-4 bg-white text-crn-blue font-semibold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg"
       >
@@ -308,7 +308,7 @@ const tabs = [
         const targetContent = document.getElementById(`tab-${targetId}`);
         if (targetContent) {
           window.scrollTo({
-            top: targetContent.offsetTop - 100,
+            top: targetContent.offsetTop - 140,
             behavior: 'smooth'
           });
         }

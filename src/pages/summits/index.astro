@@ -5,7 +5,8 @@
  */
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SummitCard from '@/components/SummitCard.astro';
-import { SUMMITS } from '@/lib/summits-data';
+import TeamCard from '@/components/TeamCard.astro';
+import { SUMMITS, ORGANIZERS } from '@/lib/summits-data';
 import { LINKS } from '@/lib/constants';
 
 // Get upcoming and past summits
@@ -33,6 +34,38 @@ const daysUntilSummit = upcomingSummit
   title="Climate Robotics Summits" 
   description="Join the global Climate Robotics Summit - connecting researchers, engineers, and practitioners to scale climate action through robotics."
 >
+  {/* Hero Section - Fallback when no upcoming summit announced */}
+  {!upcomingSummit && (
+    <section class="relative py-24 md:py-32 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-crn-navy via-crn-blue-dark to-crn-blue"></div>
+      <div class="absolute inset-0 overflow-hidden">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-crn-green/20 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-crn-blue-light/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+      </div>
+      <div class="relative container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+          <span class="inline-block px-4 py-2 bg-white/10 border border-white/30 text-white text-sm font-semibold uppercase tracking-wide rounded-full mb-6">
+            Next Summit • TBA
+          </span>
+          <h1 class="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
+            Climate Robotics Summits
+          </h1>
+          <p class="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
+            We just wrapped Summit 2026. Browse recordings and program archives below — and join our Slack to be the first to hear about Summit 2027.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <a href="/slack" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-crn-blue font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors rounded-lg">
+              Join Our Slack
+            </a>
+            <a href="#past-summits" class="inline-flex items-center gap-2 px-8 py-4 bg-transparent border-2 border-white text-white font-bold uppercase tracking-wider hover:bg-white hover:text-crn-blue transition-colors rounded-lg">
+              Browse Past Summits
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
   {/* Hero Section - Upcoming Summit */}
   {upcomingSummit && (
     <section class="relative min-h-[80vh] flex items-center overflow-hidden">
@@ -143,7 +176,7 @@ const daysUntilSummit = upcomingSummit
     <div class="container mx-auto px-4">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
         <div class="text-center">
-          <span class="block text-4xl md:text-5xl font-heading font-bold text-crn-blue">2</span>
+          <span class="block text-4xl md:text-5xl font-heading font-bold text-crn-blue">3</span>
           <span class="text-gray-600">Summits Held</span>
         </div>
         <div class="text-center">
@@ -151,7 +184,7 @@ const daysUntilSummit = upcomingSummit
           <span class="text-gray-600">Total Attendees</span>
         </div>
         <div class="text-center">
-          <span class="block text-4xl md:text-5xl font-heading font-bold text-crn-blue">50+</span>
+          <span class="block text-4xl md:text-5xl font-heading font-bold text-crn-blue">60+</span>
           <span class="text-gray-600">Sessions</span>
         </div>
         <div class="text-center">
@@ -165,7 +198,7 @@ const daysUntilSummit = upcomingSummit
   {/* What to Expect */}
   <section class="py-20 bg-white">
     <div class="container mx-auto px-4">
-      <h2 class="section-title mb-12">What to Expect</h2>
+      <h2 class="section-title mb-12">What Our Summits Offer</h2>
       
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         <div class="p-8 bg-gray-50 rounded-xl hover:shadow-lg transition-shadow">
@@ -243,9 +276,25 @@ const daysUntilSummit = upcomingSummit
     </div>
   </section>
   
+  {/* Organizers & Volunteers */}
+  <section id="team" class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title mb-4">Organizers &amp; Volunteers</h2>
+      <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+        The Climate Robotics Summit is made possible by an international team of organizers and volunteers.
+      </p>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        {ORGANIZERS.map(member => (
+          <TeamCard member={member} />
+        ))}
+      </div>
+    </div>
+  </section>
+
   {/* Past Summits Archive */}
   {pastSummits.length > 0 && (
-    <section class="py-20 bg-gray-100">
+    <section id="past-summits" class="py-20 bg-gray-100">
       <div class="container mx-auto px-4">
         <h2 class="section-title mb-4">Past Summits</h2>
         <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">

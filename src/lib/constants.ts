@@ -50,6 +50,9 @@ export const LINKS = {
   summit: {
     registrationForm: 'https://docs.google.com/forms/d/e/1FAIpQLSccaLhLTgwEd2LDtVKfWHrfoUW8B81ISnRQTHnGHQ36omyjFg/viewform',
     sponsorDeck: 'https://drive.google.com/file/d/1Gse1WSB-2YB_GvsK1hrhZW-200rgTDpT/view?usp=sharing',
+    agenda2026Pdf: 'https://drive.google.com/file/d/16uSe6734UP9uAxuDS_D_yv3n1PJBracg/view?usp=sharing',
+    researchPitches2026Form: 'https://docs.google.com/forms/d/e/1FAIpQLSc01j-4rBKwWdjW8dWJLnPwCnw5gn41ftR9rp0ymDjWYbbY0w/viewform',
+    startupPitches2026Form: 'https://docs.google.com/forms/d/e/1FAIpQLScig8F0OVOytbxRZ7n4EIYcFLbkUpoeDPOmO1e28niXJw6_0g/viewform',
   },
 
   // =============================================================================
@@ -81,6 +84,7 @@ export const LINKS = {
     fondationValery: 'https://www.fondation-valery.ch/',
     graspUpenn: 'https://www.grasp.upenn.edu/',
     wpi: 'https://www.wpi.edu/',
+    universityOfMichigan: 'https://umich.edu/',
   },
 } as const;
 
@@ -184,16 +188,22 @@ export const SITE = {
 
 export const SUMMIT = {
   name: 'Climate Robotics Summit',
-  // Current/Next Summit
+  // Next summit not yet announced. Most recent past summit is mirrored here
+  // so legacy consumers keep rendering until the 2027 details are confirmed.
   current: {
     year: '2026',
     dates: 'April 21-23, 2026',
-    registrationOpens: 'January 15, 2026',
+    registrationOpens: 'TBA',
     format: 'Online',
-    isRegistrationOpen: false, // Set to true when registration opens
+    isRegistrationOpen: false,
   },
   // Past Summits
   archive: {
+    '2026': {
+      dates: 'April 21-23, 2026',
+      playlistId: null,
+      videoCount: 0,
+    },
     '2025': {
       dates: 'May 6-9, 2025',
       playlistId: 'PLCSxuLa5A9VqMM74yg8URkhv03t-fsdht',
