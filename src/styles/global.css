@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply font-body text-gray-800 antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading font-semibold tracking-wide;
+  }
+  
+  /* Improved focus states for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-crn-blue ring-offset-2;
+  }
+  
+  /* Remove default outline for mouse users */
+  :focus:not(:focus-visible) {
+    @apply outline-none;
+  }
+  
+  /* Ensure images don't overflow */
+  img {
+    @apply max-w-full h-auto;
+  }
+  
+  /* Improved text selection colors */
+  ::selection {
+    @apply bg-crn-blue text-white;
+  }
+}
+
+@layer components {
+  /* Skip to content link for screen readers */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 
+           focus:z-[100] focus:px-4 focus:py-2 focus:bg-crn-blue focus:text-white 
+           focus:rounded-lg focus:font-semibold;
+  }
+  
+  .section-title {
+    @apply text-crn-blue text-3xl md:text-4xl font-heading font-bold tracking-[0.2em] uppercase text-center;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-crn-blue text-white font-semibold 
+           uppercase tracking-wider hover:bg-crn-blue-dark transition-all duration-200
+           focus:ring-2 focus:ring-crn-blue focus:ring-offset-2;
+  }
+  
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-crn-blue text-crn-blue 
+           font-semibold uppercase tracking-wider hover:bg-crn-blue hover:text-white 
+           transition-all duration-200 focus:ring-2 focus:ring-crn-blue focus:ring-offset-2;
+  }
+  
+  .link-arrow {
+    @apply inline-flex items-center gap-1 text-crn-blue font-semibold uppercase tracking-wider 
+           hover:underline underline-offset-4 transition-colors;
+  }
+  
+  .nav-link {
+    @apply text-sm font-semibold uppercase tracking-wider text-gray-800 
+           hover:text-crn-blue transition-colors duration-200;
+  }
+  
+  .nav-link-active {
+    @apply nav-link text-crn-blue underline underline-offset-4;
+  }
+  
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
+  }
+  
+  /* Improved contrast text utilities */
+  .text-on-dark {
+    @apply text-white;
+  }
+  
+  .text-on-dark-muted {
+    @apply text-white/80;
+  }
+  
+  /* Accessible gray text (meets WCAG AA) */
+  .text-accessible-gray {
+    @apply text-gray-600; /* 4.5:1 contrast on white */
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-in-left {
+    animation: slideInLeft 0.5s ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slideInRight 0.5s ease-out forwards;
+  }
+  
+  /* Staggered animation delays */
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-400 { animation-delay: 400ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+  
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-in,
+    .animate-fade-in-up,
+    .animate-slide-in-left,
+    .animate-slide-in-right {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}

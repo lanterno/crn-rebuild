@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Illustration of a green leaf with a water droplet">
+  <rect width="800" height="600" fill="#ecfdf5"/>
+  <path d="M150 470 C200 200 450 90 680 110 C660 340 520 520 230 500 Z" fill="#16a34a"/>
+  <path d="M150 470 C320 360 480 240 680 110" fill="none" stroke="#bbf7d0" stroke-width="6" stroke-linecap="round"/>
+  <g stroke="#86efac" stroke-width="4" stroke-linecap="round" fill="none">
+    <path d="M300 370 L280 260"/><path d="M300 370 L410 380"/><path d="M420 290 L400 190"/><path d="M420 290 L530 300"/><path d="M540 210 L620 230"/>
+  </g>
+  <path d="M470 330 C470 300 500 270 500 270 C500 270 530 300 530 330 A30 30 0 0 1 470 330 Z" fill="#7dd3fc" opacity="0.9"/>
+  <circle cx="488" cy="325" r="7" fill="#ffffff" opacity="0.8"/>
+</svg>

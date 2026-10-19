@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+  <rect width="1600" height="900" fill="#14532d"/>
+  <rect y="600" width="1600" height="300" fill="#052e16"/>
+  <g fill="#166534">
+    <polygon points="100,700 220,250 340,700"/><polygon points="380,720 520,180 660,720"/>
+    <polygon points="700,700 820,300 940,700"/><polygon points="980,730 1130,160 1280,730"/>
+    <polygon points="1300,700 1420,280 1540,700"/>
+  </g>
+  <g fill="#15803d">
+    <polygon points="0,820 140,420 280,820"/><polygon points="260,840 420,380 580,840"/>
+    <polygon points="600,820 760,400 920,820"/><polygon points="900,850 1070,360 1240,850"/>
+    <polygon points="1230,830 1400,420 1570,830"/>
+  </g>
+  <g fill="#fef3c7" opacity="0.25">
+    <polygon points="900,0 1000,0 760,900 600,900"/><polygon points="1100,0 1160,0 1000,900 900,900"/>
+  </g>
+</svg>

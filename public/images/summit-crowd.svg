@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" role="img" aria-label="Abstract illustration of an audience facing a stage">
+  <rect width="1200" height="600" fill="#1e3a8a"/>
+  <rect x="300" y="60" width="600" height="220" rx="16" fill="#3b82f6"/>
+  <rect x="330" y="90" width="540" height="160" rx="10" fill="#0f172a"/>
+  <polygon points="560,130 560,210 630,170" fill="#22c55e"/>
+  <g fill="#93c5fd">
+    <circle cx="100" cy="380" r="28"/><circle cx="220" cy="380" r="28"/><circle cx="340" cy="380" r="28"/><circle cx="460" cy="380" r="28"/><circle cx="580" cy="380" r="28"/><circle cx="700" cy="380" r="28"/><circle cx="820" cy="380" r="28"/><circle cx="940" cy="380" r="28"/><circle cx="1060" cy="380" r="28"/>
+  </g>
+  <g fill="#60a5fa">
+    <circle cx="40" cy="470" r="32"/><circle cx="160" cy="470" r="32"/><circle cx="280" cy="470" r="32"/><circle cx="400" cy="470" r="32"/><circle cx="520" cy="470" r="32"/><circle cx="640" cy="470" r="32"/><circle cx="760" cy="470" r="32"/><circle cx="880" cy="470" r="32"/><circle cx="1000" cy="470" r="32"/><circle cx="1120" cy="470" r="32"/>
+  </g>
+  <g fill="#2563eb">
+    <circle cx="100" cy="570" r="36"/><circle cx="220" cy="570" r="36"/><circle cx="340" cy="570" r="36"/><circle cx="460" cy="570" r="36"/><circle cx="580" cy="570" r="36"/><circle cx="700" cy="570" r="36"/><circle cx="820" cy="570" r="36"/><circle cx="940" cy="570" r="36"/><circle cx="1060" cy="570" r="36"/>
+  </g>
+</svg>
